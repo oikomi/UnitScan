@@ -1,4 +1,4 @@
-UniyScan
+UnitScan
 ========
 A Web Scanner
 
