@@ -3,4 +3,5 @@ encoding//net/DeepSpider/GetUrl.py=utf-8
 encoding//net/DeepSpider/WebCrawler.py=utf-8
 encoding//net/DeepSpider/test.py=utf-8
 encoding//net/HttpClient.py=utf-8
+encoding//net/SurfaceSpider/SurfaceSpider.py=utf-8
 encoding//net/spider.py=utf-8
