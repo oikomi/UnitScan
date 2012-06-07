@@ -3,6 +3,7 @@
 
 import random
 import re
+import socket
 from bs4 import BeautifulSoup
 from net.HttpClient import HttpClient
 from net.HttpClient import HTTPResponse
@@ -107,6 +108,86 @@ class mod_xss():
             
             data = data.replace(code, "none", 1)
         return payloads
+    
+    def findXSS(self, page, args, var, code, referer, payloads, encoding=None):
+        headers = {"Accept": "text/plain"}
+        params = args.copy()
+        url = page
+        
+        # ok let's send the requests
+        for payload in payloads:
+            if params == {}:
+                url = page + "?" + self.http.quote(payload)
+                try:
+                    dat = self.http.send(url).getPage()
+                except socket.timeout:
+                    dat = ""
+                var = "QUERY_STRING"
+            
+            else:
+                params[var] = payload
+                
+                if referer != "": #POST
+                    try:
+                        dat = self.http.send(page, self.http.encode(params, encoding), headers).getPage()
+                    except socket.timeout:
+                        dat = ""
+                else:#GET
+                    url = page + "?" + self.http.encode(params, encoding)
+                    try:
+                        dat = self.http.send(url).getPage()
+                    except socket.timeout:
+                        dat = ""
+                        
+            if self.validXSS(dat, code):
+                if params != {}:
+                
+                if referer != "":
+                    print _("Found XSS in"), page
+                    print "  " + _("with params") + " =", self.http.encode(params, encoding)
+                    print "  " + _("coming from"), referer
+                else:
+                    print _("XSS") + " (" + var + ") " + _("in"), page
+                    print "  " + _("Evil url") + ":", url
+                return True
+##########################################################
+###### try the same things but with raw characters #######
+            if params == {}:
+                url = page + "?" + payload
+                try:
+                    dat = self.http.send(url).getPage()
+                except socket.timeout:
+                    dat = ""
+                var = "QUERY_STRING"
+            else:
+                params[var] = payload
+                
+                if referer != "": #POST
+                    try:
+                        dat = self.http.send(page, self.http.uqe(params, encoding), headers).getPage()
+                    except socket.timeout:
+                        dat = ""
+                else:#GET
+                    url = page + "?" + self.http.uqe(params, encoding)
+                    try:
+                        dat = self.http.send(url).getPage()
+                    except socket.timeout:
+                        dat = ""
+            if self.validXSS(dat, code):
+                if params != {}:
+                    
+                if referer != "":
+                    print _("Found raw XSS in"), page
+                    print "  " + _("with params") + " =", self.http.uqe(params, encoding)
+                    print "  " + _("coming from"), referer
+                else:
+                    print _("Raw XSS") + " (" + var + ") " + _("in"), page
+                    print "  " + _("Evil url") + ":", url
+                return True
+            
+        return False
+
+    
     
     def validXSS(self, page, code):
         if page == None or page == "":

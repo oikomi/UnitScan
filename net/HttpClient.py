@@ -3,6 +3,9 @@
 
 
 import requests
+import urllib
+import urlparse
+import socket
 
 class HTTPResponse():
     data = ""
@@ -38,6 +41,23 @@ class HttpClient():
                 
                 
         return HTTPResponse(self.req.text, self.req.status_code, self.req.headers)
+    
+    def quote(self, url):
+        "Encode a string with hex representation (%XX) for special characters."
+        return urllib.quote(url)
+    
+    def encode(self, url, encoding = None):
+        "Encode a sequence of two-element tuples or dictionary into a URL query string."
+        if encoding != None and encoding != "":
+            tmp = {}
+            for k, v in url.items():
+                tmp[k.encode(encoding, "ignore")] = v.encode(encoding, "ignore")
+            return urllib.urlencode(tmp)
+        return urllib.urlencode(url)
+    
+    def uqe(self, url, encoding = None):
+        "urlencode a string then interpret the hex characters (%41 will give 'A')."
+        return urllib.unquote(self.encode(url, encoding))
         
 if __name__ == "__main__":
     h = HttpClient()
