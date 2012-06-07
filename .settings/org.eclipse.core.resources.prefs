@@ -8,3 +8,4 @@ encoding//net/spider.py=utf-8
 encoding//payloads/GetPayloads.py=utf-8
 encoding//scanner/mod_sql.py=utf-8
 encoding//scanner/mod_xss.py=utf-8
+encoding/us.py=utf-8
