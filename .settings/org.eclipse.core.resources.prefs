@@ -5,3 +5,5 @@ encoding//net/DeepSpider/test.py=utf-8
 encoding//net/HttpClient.py=utf-8
 encoding//net/SurfaceSpider/SurfaceSpider.py=utf-8
 encoding//net/spider.py=utf-8
+encoding//payloads/GetPayloads.py=utf-8
+encoding//scanner/mod_xss.py=utf-8
