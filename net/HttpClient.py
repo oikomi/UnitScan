@@ -35,11 +35,13 @@ class HttpClient():
         pass
     
     def send(self, target, post_data = None, http_params = {}, http_headers = {}, method=""):
-        if post_data == None:
-            if method == "get":
-                self.req = requests.get(target, params=http_params, headers=http_headers)
+        
+        if method == "get":
+            self.req = requests.get(target, params=http_params, headers=http_headers)
+        if method == "post":
+            self.req = requests.post(url=target ,data=post_data,headers=http_headers)
                 
-                
+                            
         return HTTPResponse(self.req.text, self.req.status_code, self.req.headers)
     
     def quote(self, url):
@@ -61,7 +63,7 @@ class HttpClient():
         
 if __name__ == "__main__":
     h = HttpClient()
-    url = 'http://www.renren.com/'
+    url = 'http://www.163.com/'
     print h.send(url, method='get').getCode()
     #print h.send(url, method='get').getPage()
     print h.send(url, method='get').getInfo()    

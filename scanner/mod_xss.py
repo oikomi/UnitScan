@@ -119,7 +119,7 @@ class mod_xss():
             if params == {}:
                 url = page + "?" + self.http.quote(payload)
                 try:
-                    dat = self.http.send(url).getPage()
+                    dat = self.http.send(url,method='get').getPage()
                 except socket.timeout:
                     dat = ""
                 var = "QUERY_STRING"
@@ -129,13 +129,13 @@ class mod_xss():
                 
                 if referer != "": #POST
                     try:
-                        dat = self.http.send(page, self.http.encode(params, encoding), headers).getPage()
+                        dat = self.http.send(page, self.http.encode(params, encoding), headers,method='post').getPage()
                     except socket.timeout:
                         dat = ""
                 else:#GET
                     url = page + "?" + self.http.encode(params, encoding)
                     try:
-                        dat = self.http.send(url).getPage()
+                        dat = self.http.send(url,method='get').getPage()
                     except socket.timeout:
                         dat = ""
                         
