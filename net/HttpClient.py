@@ -64,6 +64,7 @@ class HttpClient():
 if __name__ == "__main__":
     h = HttpClient()
     url = 'http://www.sohu.com/'
+
     #print h.encode(url, 'utf-8')
     print h.send(url, method='get').getCode()
     #print h.send(url, method='get').getPage()
