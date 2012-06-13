@@ -97,31 +97,57 @@ import StringIO
 import re
 from bs4 import BeautifulSoup
 
-def getURLContent_pycurl(url):
-    c = pycurl.Curl()
-    c.setopt(pycurl.URL,url)
-    b = StringIO.StringIO()
-    c.setopt(pycurl.WRITEFUNCTION, b.write)
-    c.setopt(pycurl.FOLLOWLOCATION, 1)
-    c.setopt(pycurl.MAXREDIRS, 5)
-
-    #c.setopt(pycurl.PROXY, 'http://11.11.11.11:8080')
-    #c.setopt(pycurl.PROXYUSERPWD, 'aaa:aaa')
-    c.perform()
-    return b.getvalue()
-
-def getHyperLinks(url):
-    links=[]
-    data=getURLContent_pycurl(url)
+class SurfaceSpider():
+    def __init__(self):
+        self.c = pycurl.Curl()
+        self.b = StringIO.StringIO()
+        self.links=[]
+    
+    def getInfo(self,url):
+        crl = pycurl.Curl()
+        crl.setopt(pycurl.VERBOSE,1)
+        crl.setopt(pycurl.FOLLOWLOCATION, 1)
+        crl.setopt(pycurl.MAXREDIRS, 5)
+        crl.setopt(pycurl.USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)")
+        crl.fp = StringIO.StringIO()
+        crl.setopt(pycurl.URL, url)
+        crl.setopt(crl.WRITEFUNCTION, crl.fp.write)
+        crl.perform()
+        return crl.getinfo(pycurl.HTTP_CODE)
+        
+        
+        
+    def getContent(self,url):
+        self.c.setopt(pycurl.URL,url)
+        self.c.setopt(pycurl.WRITEFUNCTION, self.b.write)
+        self.c.setopt(pycurl.MAXREDIRS, 5) 
+        self.c.setopt(pycurl.USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)")
+        self.c.perform()
+        return self.b.getvalue()
+        
+    def getHyperLinks(self,url):
+        
+        data=self.getContent(url)
   
-    soup=BeautifulSoup(data)
-    a=soup.findAll("a",{"href":re.compile(".*")})
-    for i in a:
-        if i["href"].find("http://")!=-1:
-            links.append(i["href"]) 
-    return links
+        soup=BeautifulSoup(data)
+        a=soup.findAll("a",{"href":re.compile(".*")})
+        for i in a:
+            if i["href"].find("http://")!=-1:
+                self.links.append(i["href"]) 
+        return self.links
+    
+    #def 
+    
+    #def getForms(self,url):
+        
 
 url = 'http://www.huawei.com/cn/'
-content =getURLContent_pycurl(url)
-print getHyperLinks('http://www.huawei.com/cn/')
+ss = SurfaceSpider()
+content =ss.getContent(url)
+#print ss.getHyperLinks('http://www.huawei.com/cn/')
+#print ss.getInfo('http://www.huawei.com/cn/')
+for a in ss.getHyperLinks('http://www.huawei.com/cn/'):
+    print a
+    print ss.getInfo(url)
+    #print a
 
