@@ -7,7 +7,7 @@ import socket
 from bs4 import BeautifulSoup
 from net.HttpClient import HttpClient
 from net.HttpClient import HTTPResponse
-from payloads.GetPayloads import getloads
+from payloads.GetPayloads import loadPayloads
 
 
 class Xss():
@@ -18,7 +18,9 @@ class Xss():
     
     def __init__(self):
         self.http = HttpClient()
-        self.independant_payloads = getloads()
+        self.independant_payloads = loadPayloads()
+        print '-------------------'
+        print self.independant_payloads
 
     def study(self, obj, parent=None, keyword="", entries=[]):
         if str(obj).find(keyword) >= 0:
@@ -40,7 +42,7 @@ class Xss():
         
     def generate_payloads(self, data, code):
         headers = {"Accept": "text/plain"}
-        soup = BeautifulSoup.BeautifulSoup(data)
+        soup = BeautifulSoup(data)
         e = []
         self.study(soup, keyword = code, entries = e)
         
@@ -113,8 +115,10 @@ class Xss():
             code = "".join([random.choice("0123456789abcdefghjijklmnopqrstuvwxyz") for i in range(0,10)])
             url = page + "?" + code
             self.GET_XSS[code] = url
-            
-            data = self.http.send(url,method='get').getPage()
+            try:
+                data = self.http.send(url,method='get').getPage()
+            except socket.timeout:
+                data = ''
             print '----------------'
             #print data
             #if data.find(code) >= 0:
@@ -135,11 +139,18 @@ class Xss():
                 print tmp
                 url = page + "?" + self.http.encode(tmp, headers["link_encoding"])
                 self.GET_XSS[code] = url
-                data = self.http.send(url,method='get').getPage()
+                try:
+                    data = self.http.send(url,method='get').getPage()
+                except socket.timeout:
+                    data = ''
                 
-                if data.find(code) >= 0:
+                #if data.find(code) >= 0:
+                print '^^^^^^^^^^^^^^^^^^^'
+                print data
+                if 1:
                     print 'get it'
                     payloads = self.generate_payloads(data, code)
+                    print payloads
                     if payloads != []:
                         self.findXSS(page, tmp, k, code, "", payloads, headers["link_encoding"])
             
