@@ -38,6 +38,7 @@ class HttpClient():
         
         if method == "get":
             self.req = requests.get(target, params=http_params, headers=http_headers)
+            print self.req.encoding
         if method == "post":
             self.req = requests.post(url=target ,data=post_data,headers=http_headers)
                 
@@ -63,10 +64,11 @@ class HttpClient():
         
 if __name__ == "__main__":
     h = HttpClient()
-    url = 'http://www.sohu.com/'
+    url = 'http://www.163.com/'
 
     #print h.encode(url, 'utf-8')
     print h.send(url, method='get').getCode()
+  
     #print h.send(url, method='get').getPage()
     print h.send(url, method='get').getInfo()    
     
