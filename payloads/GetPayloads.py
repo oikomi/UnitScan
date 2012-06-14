@@ -6,6 +6,17 @@
 from auxtext import AuxText
 
 
-def loadPayloads(self,fileName):
+def loadPayloads(fileName):
     """This method loads the payloads for an attack from the specified file"""
-    return self.auxText.readLines(fileName)
+    auxText = AuxText()
+    print auxText.readLines(fileName)
+    return auxText.readLines(fileName)
+
+def getloads():
+    return loadPayloads('xssPayloads.txt')
+
+
+if __name__ == "__main__":
+    getloads()
+
+
