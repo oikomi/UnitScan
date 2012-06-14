@@ -1,0 +1,244 @@
+
+
+<html>
+	<head>
+	<title>普通本科教务系统</title>
+	<META http-equiv=Content-Type content="text/html; charset=gb2312">
+	<link href="/zsujw/css/style.css" rel="stylesheet" type="text/css">
+	<script src="/zsujw/script/sel_style.js"></script>
+	<script src="/zsujw/script/security/common.js"></script>
+	<script src="/zsujw/script/general.js"></script>
+<style type="text/css">
+<!--
+body{
+	MARGIN: 0px;
+	background-color: #107DEF;	
+	}
+-->
+</style>
+<script type="text/javascript">
+function getCurDate(){
+    var pdate = new Date();
+    var curdate = pdate.getYear();
+    curdate +="-";
+    if(pdate.getMonth()+1<10){
+        curdate +="0";
+        curdate +=pdate.getMonth()+1;
+    }else{
+		curdate += pdate.getMonth()+1;
+	}
+	curdate +="-";
+    if(pdate.getDate()<10)
+        curdate +="0";
+    curdate += pdate.getDate();
+    return curdate;
+}
+          
+var isPop 
+if(top != self)
+	top.location = 'login.jsp';
+function MM_login(){					
+	var name = f.j_username.value;
+	var pass = f.j_password.value;
+	// 如果连续三次不正确，则锁定
+	if(name=='' ){			
+		document.f.j_username.value = "<请输入您的用户名>"	
+		document.f.j_username.focus();
+		return;
+	}	
+	if(pass == ''){
+		alert('请输入密码!')
+		document.f.j_password.focus();				
+		return;	
+	}		
+	 
+	 var user = "";  
+	 if(name== user ){
+		var result = window.confirm(name+",您已经登录本系统!是否重新登录？");
+		if(!result) return false; 
+	 } 
+	
+	//if(getOpenFrame('application/welcome.htm'))//弹出窗口
+	//document.all.tdId_waitLogin.style.display = '';//显示等待信息
+	//弹出进度条
+	if(!getClickLoading('登录信息',0.005))
+		return;
+	document.all.tdId_errorLogin.style.display = 'none';
+	document.f.action="login.do";
+	//document.f.target=windowName;
+	//document.f.target="frm_login" 
+	document.f.target = "_top";
+	document.f.method="post"
+	document.f.submit();
+	//
+	document.f.j_username.value='';
+	document.f.j_password.value='';
+	//document.all.tdId_waitLogin.focus();	
+	setTimeout("CatchError()",15011);
+}
+//异常处理
+function CatchError()
+{
+	if(!isFinisthLoading){
+		alert('登录系统超时，请检查网络情况！');
+		location.reload();
+	}
+}
+document.onkeyup = function(){
+	if(13 == event.keyCode)
+	MM_login();
+}
+
+//忘记密码
+var childURL;
+function forgetPass(){
+	var name = document.f.j_username.value;
+	// alert(name);
+	if((name==null)||(name=='')){
+		alert("请输入用户名称");
+		document.f.j_username.focus();
+		return;
+	}
+	childURL = "/zsujw/security/register.do?method=showForgetPW&originFrm=1&username="+name;
+	var returnValue = showChooseWindow("/zsujw/application/security/info/popWindow/frame.jsp",window,500,300);	 
+}  
+</script>
+</HEAD>
+<BODY onload="document.all.item('j_username').focus()">
+<table width="100%" height="120"  border="0" cellpadding="0" cellspacing="0" background="image/main/topbanner.gif">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+ <form name="f">	
+  <TBODY>
+    <TR>
+      <TD valign="top">
+        <table width="100%"  border="0" cellpadding="0" cellspacing="0" background="image/main/banner_03.gif">
+          <tr>
+            <td width="454" height="259" background="image/main/banner_01.gif">&nbsp;</td>
+            <td width="150" background="image/main/banner_02.gif">&nbsp;</td>
+            <td valign="top" ><table width="100%" border="0" cellpadding="2" cellspacing="2">
+              <tr>
+                <td height="20" colspan="2" align="right" class="article_copyright">
+					<a href="http://www.zsu.edu.cn" target="_blank">中山大学</a> | <a href="http://jwc.sysu.edu.cn" >教务处网站</a>&nbsp;
+					</td>
+              </tr>
+              <tr>
+                <td height="10" colspan="2"></td>
+              </tr>
+              <tr>
+                <td height="29" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==== 校务管理系统用户登录入口 ====</td>
+              </tr>
+			<tr >
+				<td height="23" colspan="2" class="article_error" id="tdId_errorLogin" style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;登陆失败：请重新输入帐户和密码! <a href="login_failed.jsp" target="_blank"></a> </td>
+			</tr>	
+              <tr>
+                <td width="32%" height="21" align="right">用户名称:</td>
+                <td width="68%">
+                  <INPUT name="j_username"   size=18  type="text" class="button2">
+                </td>
+              </tr>
+              <tr>
+                <td height="25" align="right">用户密码:</td>
+                <td><INPUT name="j_password" type="password" size=18 class="button2">
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2"><table width="100%"  border="0" cellspacing="2" cellpadding="2">
+                    <tr>
+                      <td width="21%">&nbsp;</td>
+                      <td width="79%">
+					  <a href="javascript:MM_login()"><img src="image/skin/0/login-001.gif" width="65" height="19" border="0" id="login001"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+					  <a href="javascript:f.reset()"><img src="image/skin/0/login-002.gif" width="65" height="19" border=0 id="login002"></a> 
+					  <!--a href="forget_password.jsp"><img src="image/skin/0/login-003.gif" width="90" height="19" border="0"></a-->
+                      <p>·<a href="http://ecampus.sysu.edu.cn/zsuext/c/ecampus/forgetPassword" class="font_white">忘记密码</a>
+		      <p><font color=red>新教务系统已启用，旧教务系统停用，请各位老师各位同学登录以下网址：<a href=http://uems.sysu.edu.cn/jwxt>http://uems.sysu.edu.cn/jwxt</a></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </table></td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table>
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="1" bgcolor="#000033"></td>
+          </tr>
+      </table>      </TD>
+    </TR>
+  </TBODY>
+  </form>
+</TABLE>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="99%" align="right">&nbsp;</td>
+    <td width="1%" rowspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="24" align="right" class="article_timeStyle3">系统说明 | 安全设置 | <a href="http://helpdesk.sysu.edu.cn/otrs/public.pl?Action=PublicFAQ&Subaction=Explorer&CategoryID=23" class="article_timeStyle3" target="_blank">技术支持</a> | &nbsp;<a href="mailto:xjy@mail.sysu.edu.cn"  class="article_timeStyle3">联系我们</a>&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right" height="3"></td>
+  </tr>
+  <tr>
+    <td  align="right">
+		<table width="260"  border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td height="1" bgcolor="#FFFFFF"></td>
+		  </tr>
+			<tr>
+			<td height="3" ></td>
+		  </tr>	  
+		</table>      
+	<font color="#FFFFFF">版权所有 &copy; 2005 新中新集团 北京希尔 </font></td>
+  </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<!-------------->
+<iframe name="frm_login" src="about:blank" width="1" height="1" frameborder="0"></iframe>
+<!-------------->
+<script language="javascript">
+var tempState=true;
+function check_update(temp){  
+  if(!temp&&!tempState){	  
+	   index_update_style(get_cookie("ZsuSysStyle_cookie"));
+	   tempState=true;	  
+  }	
+}
+function images_update(){
+	document.all.tdId_loginTop.style.backgroundImage='url('+golobal_image_path+'/login_2.gif)';
+	document.all.tdId_loginHead.style.backgroundImage='url('+golobal_image_path+'/login_6.gif)';
+	document.all.tdId_loginMain.style.backgroundImage='url('+golobal_image_path+'/login_9.gif)';
+	document.all.tdId_loginDown.style.backgroundImage='url('+golobal_image_path+'/login_12.gif)';	
+	document.all.imgId_client.src=golobal_image_path+'/copy_logo.gif';
+	document.all.imgId_help.src=golobal_image_path+'/help.gif';
+	for(var i=0;i<document.all.login_space.length;i++)
+		document.all.login_space[i].src = golobal_image_path+'/top_spaser.gif';
+	//document.all.login003.src=golobal_image_path+'/login-003.gif';
+}
+//images_update();
+
+function index_update_style(temp){
+	if(temp==null)
+		temp=0;
+	update_style(temp);		
+	images_update();		
+}
+//--显示 load...
+//InitLoadingImage('tdId_waitLogin','./'); 
+</script>
+</BODY>
+</HTML>

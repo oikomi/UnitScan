@@ -107,4 +107,4 @@ def main(seeds,crawl_count):
     craw=MyCrawler(seeds)
     craw.crawling(seeds,crawl_count)
 if __name__=="__main__":
-    main(["http://www.baidu.com"],50)
+    main(["http://history.sysu.edu.cn/archive/index.php"],1010000)

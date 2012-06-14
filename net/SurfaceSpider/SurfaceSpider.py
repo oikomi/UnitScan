@@ -131,6 +131,7 @@ class SurfaceSpider():
   
         soup=BeautifulSoup(data)
         a=soup.findAll("a",{"href":re.compile(".*")})
+        print a
         for i in a:
             if i["href"].find("http://")!=-1:
                 self.links.append(i["href"]) 
@@ -143,11 +144,11 @@ class SurfaceSpider():
 
 url = 'http://www.huawei.com/cn/'
 ss = SurfaceSpider()
-content =ss.getContent(url)
+#content =ss.getContent(url)
 #print ss.getHyperLinks('http://www.huawei.com/cn/')
 #print ss.getInfo('http://www.huawei.com/cn/')
-for a in ss.getHyperLinks('http://www.huawei.com/cn/'):
+for a in ss.getHyperLinks('http://history.sysu.edu.cn/archive/index.php'):
     print a
-    print ss.getInfo(url)
+    #print ss.getInfo(url)
     #print a
 

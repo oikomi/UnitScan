@@ -1,0 +1,897 @@
+/*****************************************************************
+******************************************************************
+以下为所有风格通用样式
+margin: 0;padding: 0;设置外边距,内边距空隙都为0
+font-size: 12px;为字体大小.一般表格内的,不受他控制
+li,ul设置list-style: none;主要是取消默认的小圆点.不太好看
+******************************************************************
+*****************************************************************/
+
+body, form, ul, li, p, dl, dd, dt ,h,td,th,h3{
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+}
+li,ul{
+	list-style: none;
+}
+body{
+	background-image:url(bg.gif); background-position:center 98%;
+}
+
+/******************************************
+TD中的color: #333333;为没有超级链接的字体颜色
+VERTICAL-ALIGN: top;表格里的内容居顶
+text-align:left;表格里的内容居左
+*******************************************/
+
+TD {
+	color: #A55E0C;
+	VERTICAL-ALIGN: top;
+}
+
+/******************************************
+border:1px solid #ccc; 表单边框为1个像素的实线,
+要为虚线改solid为dotted,要换颜色改#ccc
+可以自定义背景颜色
+background:#eee;
+*******************************************/
+
+input,textarea{
+	background:#E4CFB1;
+	border:1px solid #A55E0C;
+}
+
+/******************************************
+font-size: 12px;超级链接字体大小
+color:字体颜色
+text-decoration: none;没有下画线.要有下画线.改none为underline
+a 为统一超级链接,
+a:link没有点击过的超级链接样式
+a:visited 被点击过的超级链接样式
+a:hover 鼠标指向时的超级链接样式
+a:active 被用户激活(在鼠标点击与释放之间发生的事件)时的样式.少用
+*******************************************/
+
+a {
+	font-size: 12px;
+}
+a:link {
+	color: #A55E0C;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #A55E0C;
+}
+a:hover {
+	text-decoration: underline;
+	color: #A55E0C;
+}
+a:active {
+	text-decoration: none;
+}
+
+/*****************************************************************************
+网页整体宽度
+*****************************************************************************/
+.wrap{
+	width:890px;
+	margin:auto;
+	background:#D3B285;
+}
+/*横幅广告*/
+#banner_ad{
+	margin-top:5px;
+	display:none;
+}
+/******************************************
+#toplogin 网页顶部登录框表格ID编号
+background表格背景颜色
+height高度
+*******************************************/
+
+#toplogin{
+	background:url(headbg.gif);
+	border:1px solid #C9A473;
+	height:20px;
+}
+#toplogin td{
+	padding:1px 0 1px 0 ;
+	color:#A55E0C;
+}
+/******************************************
+#toplogin input.login_name用户名表单,
+#toplogin input.login_pwd密码表单,写在一行,用,号分开共用样式
+width:90px;表单宽
+height:15px;表单高
+*******************************************/
+
+#toplogin input.login_name,#toplogin input.login_pwd{
+	width:90px;
+	height:15px;
+}
+
+/******************************************
+#toplogin input.login_sub提交按钮表单,
+width:90px;表单宽
+height:15px;表单高
+background:#D2E4FC;	背景颜色
+*******************************************/
+
+#toplogin input.login_sub{
+	width:40px;
+	height:19px;
+	background:#D3A363;
+	border:1px solid #A55E0C;
+}
+
+/******************************************
+#header div 头部LOGO与广告图的容器,
+float:left;靠左排列
+
+#header div.ad广告容器,样式指定了靠右
+*******************************************/
+
+#header div{
+	float:left;
+}
+#header div.ad{
+	float:right;
+}
+
+/******************************************
+#header头部大表格
+margin-bottom:10px;与下面的表格距离10像素
+border-top:#ccc 1px solid;表格上方一个像素的实线,颜色为#ccc,
+可以把solid改成虚线dotted
+#header td 大表格内的TD
+padding-top:8px;上方留空8个像素
+*******************************************/
+
+#header{
+	margin-bottom:10px;
+	border-top:#ccc 0px solid;
+}
+#header td{
+	padding-top:0px;
+}
+
+/******************************************
+#guide头部网站导航表格编号
+margin-top:5px;与上方表格距离5像素
+border:1px #6B92D6 solid;边框样式solid改为dotted则为虚线
+height:28px;高度
+background:#D2E4FC;背景颜色
+#guide td导航表格内部TD容器
+border:1px solid #FFF;内边框样式
+padding:6px 3px 4px 3px;导航文字与上右下左的距离
+*******************************************/
+
+#guide{
+	margin-top:5px;
+	border:1px #D3A363 solid;
+	height:28px;
+	background:#D3A363;
+}
+#guide td{
+	border:1px solid #E4CFB1;
+	padding:6px 3px 4px 3px;
+}
+#guide td a{
+	color:#8F4500;
+}
+
+/******************************************
+整体大表格之间的间隙
+******************************************/
+.MainTable{
+	margin-top:5px;
+}
+
+/******************************************
+.MainTable .guide样式导航表格样式
+margin-top:5px;与上方表格的距离
+border:1px #A7CAFA solid;边框样式,solid可更换成dotted虚线
+height:20px;表格高度
+background:#F5FAFE;表格背景颜色
+
+.MainTable .guide td{ padding:5px; 表格内的文字距离四周的间距
+可改成 padding:5px 0 0 0;指上右下左
+*******************************************/
+
+.MainTable .guide{
+	margin-top:5px;
+	border:1px #D3A363 solid;
+	height:20px;
+	background:#E4CFB1;
+}
+.MainTable .guide td{
+	padding:5px 0 2px 5px;
+	border:1px #eee solid;
+}
+
+
+/*****************************************************************
+******************************************************************
+内容大表格模块样式
+width:100%;占满整个空间宽度
+margin-top:5px;与上一个表格间距为5个像素
+overflow:hide;内容超过时,将隐藏.不过上面用百分比,一般这里设置无效.
+只有上面用具体像素,这里才生效
+border:1px #A7CAFA solid;边框样式,1个像素,可以改solid为虚线dotted,要取消边框改1px为0px
+******************************************************************
+******************************************************************/
+
+.dragTable{
+	width:100%;
+	margin-top:5px;
+	overflow:hide;
+	background:#E4CFB1;
+	border:1px #CC9A5B solid;
+	
+}
+
+/******************************************
+内容表格模块头部样式
+background:#D2E4FC;背景颜色
+height:20px;高度
+padding-left:1em;字体与左边距离
+padding-top:7px;字体与上方距离
+border:1px #FFF solid;内边框样式,一般设置为0px较多,即不要内边框居多
+******************************************/
+
+.dragTable .head{
+	background:#FFf url(headbg.gif);
+	height:20px;
+	padding-left:1em;
+	padding-top:7px;
+	border:0px #FFF solid;
+	font-weight:bold;
+	color:#8F4500;
+}
+.dragTable .head a{
+	font-weight:bold;
+	color:#8F4500;
+}
+/******************************************
+模块主题文字
+float:left;居左,
+可以设置为粗体 font-weight:bold;颜色为color:#000;
+******************************************/
+
+.dragTable .TAG{
+	float:left;
+}
+
+/******************************************
+右边窄表格模块样式
+width:98%;宽度
+line-height:17px;字体行高
+******************************************/
+
+.MainTable .Side .dragTable{
+	width:98%;
+}
+
+.MainTable .Side .dragTable .middle{
+	line-height:17px;
+}
+
+/******************************************
+内容模块主体部分
+padding:8px;距离四周距离为8个像素,
+可以改成更具体些的padding:8px 0 0 0;即上右下左的距离
+line-height:20px;行高,即是使用<br>换行符时的文字行高
+******************************************/
+
+.dragTable .middle{
+	padding:6px 1px 4px 7px;
+	height:50px;
+	line-height:20px;
+}
+
+/******************************************
+右边窄表格最新,最热的内容样式.
+	width:210px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+通过设定固定宽度,使控制自动隐藏超出边界的内容自动隐藏,用省略号表示
+只对<ul><li>有效
+******************************************/
+
+.MainTable .Side .dragTable .middle ul li{
+	width:180px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
+/******************************************
+右边窄表格最新,最热的标题样式.
+必须<ul><li>有超链接的才有效
+display:block;定义链接为实体,方便做效果处理
+margin-left:4px;文字与左边大表格边框的距离
+text-indent:0.6em;文字与小图标的距离
+background:url(title_icon3.gif) no-repeat left;	右边列表,最热,最新等等标题前面的小图标
+no-repeat 不平铺 left;背景居左
+******************************************/
+
+.MainTable .Side .dragTable .middle ul li a{
+	display:block;
+	margin-left:4px;
+	text-indent:0.6em;
+	background:url(../default/title_icon3.gif) no-repeat left;
+}
+
+
+/******************************************
+列表页,包括首页,文章子栏目文章表格样式,表格高度
+******************************************/
+#AutoRows .dragTable .middle{
+	height:100px;
+}
+
+/******************************************
+列表页,包括首页,文章子栏目文章标题样式
+	width:246px;
+	display:block;
+	overflow:hidden;
+	text-overflow:ellipsis;
+定义width指定宽度.是为了自动隐藏超出边界的标题.用百分比不能控制
+line-height:18px;行高
+text-indent:0.6em;文字小图标的距离
+background:url(title_icon3.gif) no-repeat ;标题前的小图标
+background-position: 0 40%;	小图标X,Y的坐标
+******************************************/
+
+#AutoRows .dragTable ul li{
+	width:236px;
+	display:block;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	line-height:18px;
+	text-indent:0.6em;
+	background:url(../default/title_icon3.gif) no-repeat ;
+	background-position: 0 40%;
+}
+
+/******************************************
+文章中列表页中的图片主题,图片列表
+.listpic每张图的占位空间
+width:127px;占位宽度127像素
+padding:3px 0 3px 4px;内间隙距离上右下左
+float:left;居左排列
+.listpic .title图片底下的标题样式
+	width:127px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+固定了宽度,控制自动隐藏超出边界的文字
+******************************************/
+
+.listpic{
+	width:127px;
+	padding:3px 0 3px 2px;
+	float:left;
+}
+.listpic .title{
+	width:127px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
+/******************************************
+文章中列表页中的图片主题,图片内边框样式
+border:1px #FFF solid;边框一个像素,为实线,可以改0px,即取消内边框
+改solid为dotted即是虚线
+******************************************/
+
+.listpic img{
+	border:1px #FFF solid;
+}
+
+/******************************************
+文章中列表页中的图片主题,图片外边框样式
+width:120px;	图片外边框宽 height:90px;	图片外边框高
+display:block;	定义链接为实体利于加效果
+text-align :center;	图片在边框内居中
+border:1px #ccc solid;图片外边框样式,要取消边框,可以把1改0,
+要加粗粗,把1改成更大的数,要用虚线,可以把solid改成dotted,要换颜色修改#ccc为其他的
+margin-bottom:5px;			与底部文字的距离
+******************************************/
+
+.listpic .img a{
+	width:120px;
+	height:90px;
+	display:block;
+	text-align :center;
+	border:1px #D3A363 solid;
+	margin-bottom:5px;
+}
+
+/******************************************
+文章列表
+padding:7px 5px 0 5px;内间隙,上右下左的距离
+border-bottom:1px dashed #ccc;底部虚线,也可改为实线solid 或其他颜色
+
+.listarticle span参数样式
+******************************************/
+
+.listarticle td{
+	padding:7px 5px 0 5px;
+	border-bottom:1px dashed #eee;
+}
+.listarticle span{
+	display:block;
+	float:left;
+}
+
+/******************************************
+文章列表
+文章标题样式
+text-indent: 0.6em;与小图标的距离
+background:url(title_icon3.gif) no-repeat left;小图标,居左不平铺
+background-position: 0em 40%;小图标是背景,坐标位置
+
+.listarticle span.time{float:right;}时间靠右显示
+******************************************/
+
+.listarticle span.title{
+	text-indent: 0.6em;
+	background:url(../default/title_icon3.gif) no-repeat left;
+	background-position: 0em 40%;
+}
+.listarticle span.time{
+	float:right;
+}
+
+/******************************************
+分页
+******************************************/
+
+.page{
+	width:98%;
+	margin-top:1em;
+	clear:both;
+}
+
+.page a{
+	display:block;
+	float:left;
+	margin-right:3px;
+	border:1px solid #D3A363;
+	width:16px;
+}
+
+/*****************************************************************
+******************************************************************
+文章内容页
+.content_word,.content_word p多种格式的控制内容的样式,字号为15像素
+******************************************************************
+******************************************************************/
+.content_word,.content_word p{
+	font-size:15px;
+}
+
+/*****************************************************************************************
+******************************************************************************************
+图片频道,视频,FLASH,音乐,商城,下载频道的列表页的图片列表
+******************************************************************************************
+******************************************************************************************/
+/******************************************
+display:block;定义为模块
+width:98%;宽度为98%
+margin:8px 8px 0 10px;与其他的外间隙上右下左的距离
+height:100px;高度
+overflow:hide;文字超过则隐藏,不过上面宽度只有设置成具体像素才生效.
+border-bottom:1px #ccc dotted;底部边框为一个像素的虚线.改成solid则为实线,改成0px则取消边框
+这里特别要注意的是.把宽度改成width:44%;增加一句float:left;就可以一行显示两个
+******************************************/
+
+.ListPhoto ul{
+	display:block;
+	width:98%;
+	margin:8px 8px 0 10px;
+	height:100px;
+	overflow:hide;
+	border-bottom:1px #D3A363 dotted;
+}
+
+/******************************************
+图片与介绍文字是左右并排
+******************************************/
+
+.ListPhoto ul li{
+	display:block;
+	float:left;
+}
+
+/******************************************
+图片容器样式,
+width:130px;宽
+border-right:1px #ccc dotted;容器右边样式,改dotted为solid则为实线,把1px改为0则取消边框
+******************************************/
+
+.ListPhoto ul li.img{
+	width:130px;
+	border-right:1px #ccc dotted;
+}
+
+/******************************************
+图片内边框样式
+******************************************/
+
+.ListPhoto ul li.img img{
+	border:1px solid #ccc;
+}
+
+/******************************************
+图片外边框样式
+	display:block;	定义为实体,方便加效果
+	width:120px;	宽
+	height:90px;	高
+	text-align :center; 图片居中
+	background:#eee;	背景颜色,只有图片太小时,才看得到效果.
+	border:1px solid #333; 外边框样式,可改solid为dotted虚线.取消边框的话.改1px为0
+******************************************/
+
+.ListPhoto ul li.img a{
+	display:block;
+	width:120px;
+	height:90px;
+	text-align :center;
+	background:#eee;
+	border:1px solid #333;
+}
+
+/******************************************
+图片的相关文字样式
+margin-left:1em;与左边距离1个汉字距离
+******************************************/
+
+.ListPhoto ul li.word{
+	margin-left:1em;
+}
+
+/******************************************
+图片的相关文字样式
+display:block;做为实体,每个占一行,
+overflow:hide,文字超出边界,自动隐藏.一般只有设置了宽度时才生效
+******************************************/
+
+.ListPhoto ul li.word span{
+	display:block;
+	overflow:hide;
+}
+
+/******************************************
+图片的相关文字,超级链接的文字加粗显示
+******************************************/
+
+.ListPhoto ul li.word span.title a{
+	font-weight:bold;
+}
+
+/*****************************************************************************************
+*****************************************************************************************
+**********评论
+******************************************************************************************
+******************************************************************************************/
+
+#comment .content{
+	border:dotted 1px #D3A363;
+	margin-bottom:10px;
+}
+#comment .content .word{
+	border-bottom:solid 1px #D3A363;
+	padding-left:5px;
+	height:50px;
+}
+#comment .content .img{
+	border-right:dotted 1px #D3A363;
+	padding:1em;
+}
+#comment .content .info{
+	padding:2px 0 0 5px;
+}
+
+/*****************************************************************************************
+*****************************************************************************************
+************留言本
+*****************************************************************************************
+*****************************************************************************************/
+
+.guestbook{
+	margin-bottom:4px;
+	border:1px dotted #D3A363;
+}
+.guestbook .Ftd{
+	padding:4px;
+	border-right:1px dotted #D3A363;
+}
+.guestbook .Atd{
+	border-top:1px solid #D3A363;
+	padding-left:4px;
+}
+.guestbook .Ctd{
+	padding:4px;
+}
+
+/*****************************************************************************************
+*****************************************************************************************
+网页底部
+******************************************************************************************
+******************************************************************************************/
+
+#footer{
+	margin-top:4px;
+	width:930px;
+	height:116px;
+	background:url(footbg.jpg);
+}
+#footer td{
+	padding:1em 0 1em 0;
+}
+
+
+/*****************************************************************************************
+*****************************************************************************************
+www.php168.com官方站综合首页
+*****************************************************************************************
+*****************************************************************************************/
+
+/*内容模块头部*/
+.Main_Left .dragTable .head{
+	background:;
+	height:16px;
+	padding-left:1em;
+	padding-top:4px;
+	border:0px #FFF solid;
+	font-weight:bold;
+	color:#0D72B6;
+}
+.Main_Left .dragTable{
+	background:;
+	
+}
+.Main_Left .dragTable .middle,.Side .dragTable .middle{
+	padding-top:0px;
+	padding-left:2px;
+	padding-bottom:2px;
+	line-height:16px;
+}
+.Main_Center .dragTable .middle{
+	padding-top:4px;
+	padding-left:2px;
+	padding-bottom:0px;
+	line-height:18px;
+}
+.Main_Center .dragTable .head{
+	background:#D2E4FC;
+	height:20px;
+	padding-left:1em;
+	padding-top:7px;
+	border:0px #0D72B6 dotted;
+	border-bottom:1px #0D72B6 dotted;
+	font-weight:bold;
+	color:#333;
+}
+
+
+/*内容模块*/
+.Main_Center{
+	padding-left:0.3%;
+}
+.Main_Center .dragTable{
+	width:99%;
+	margin-top:5px;
+	overflow:hide;
+	border:0px #A7CAFA solid;
+	
+}
+.Space{
+	height:23px;
+	margin-top:4px;
+	background:url(headbg.gif);
+}
+.Space .L{
+	padding:5px 0 0 5px;
+	font-weight:bold;
+	color:#8F4500;
+}
+.Space .L{
+	float:left;
+}
+.Space .R{
+	padding:5px 5px 0 0;
+	float:right;
+}
+
+
+
+/*********************************************************************
+**********************************************************************
+AJAX在线编辑DIV容器
+这个会员看不到.只是版主管理员才可以看到.这是后台风格
+一般不必修改了.修改了会员也看不到
+**********************************************************************
+*********************************************************************/
+#AjaxEditTable{
+	border:1px solid #BEDDFF;
+	background:#FFF;
+}
+#AjaxEditTable .head{
+	height: 21px;
+	background: #DBEAFF;
+	border-bottom:1px solid #BEDDFF;
+	padding:3px 5px 0 7px;
+}
+#AjaxEditTable .head a{
+	color:#FFF;
+}
+#AjaxEditTable .head span{
+	DISPLAY: block; 
+	FLOAT: right;
+}
+#AjaxEditTable .middle{
+	background:#FFF;
+	line-height:18px;
+	padding:5px;
+}
+#AjaxEditTable .middle input,#AjaxEditTable .middle textarea{
+	border:1px solid #BEDDFF;
+	background:#FFF;
+}
+
+
+/******************************************************
+******************************************************
+**列表页小分类页
+******************************************************
+******************************************************/
+
+/*标题+内容*/
+#sort_list .list_sortTC{
+	border-bottom:1px dotted #ccc;
+	width:99%;
+	margin-bottom:10px;
+}
+#sort_list .list_sortTC .content{
+	text-indent:2em;
+}
+/*标题+内容+图片*/
+#sort_list .list_sortTCP{
+	border-bottom:1px dotted #ccc;
+	width:99%;
+	margin-bottom:10px;
+}
+#sort_list .list_sortTCP .pic{
+	padding-bottom:5px;
+	padding-right:8px;
+}
+#sort_list .list_sortTCP .content{
+	text-indent:1em;
+}
+/*列表页,标题+图片+内容的显示样式*/
+.list_sortTCP{
+	margin-bottom:12px;
+	width:99%;
+}
+.list_sortTCP .pic{
+	padding-right:1em;
+}
+.list_sortTCP .content{
+	border-bottom:1px dotted #ccc;
+	text-indent:2em;
+	color:#646464;
+}
+.list_sortTCP .title a{
+	color:#555555;
+}
+/*列表页,标题+内容的显示样式*/
+.list_sortTC{
+	margin-bottom:5px;
+	width:99%;
+	border-bottom:1px dotted #ccc;
+}
+.list_sortTC .title a{
+	color:#555555;
+}
+.list_sortTC .content{
+	text-indent:2em;
+	color:#646464;
+}
+
+/*************顶客********************/
+#viewarticle .Digg{
+	width:74px;
+	background:url(../default/digg_center.gif) center;
+}
+.Digg .left{
+	background:url(../default/digg_left.gif) left;
+	width:5px;
+}
+.Digg .right{
+	background:url(../default/digg_right.gif) right;
+	width:5px;
+}
+.Digg .number{
+	font-size:25px;
+	font-weight:bold;
+	text-align:center;
+	padding-top:14px;
+	color:#2B4399;
+}
+.Digg .title{
+	font-size:13px;
+	text-align:center;
+	padding-top:18px;
+}
+.Digg .title a{
+	color:#990000;
+}
+
+.small_digg{
+	width:38px;
+	height:24px;
+	background:url(../default/bg_digg.gif);
+	text-align:center;
+	padding-top:7px;;
+	font-size:16px;
+	margin-bottom:8px;
+	margin-right:4px;
+}
+
+.module_table{
+	border:1px dotted #ccc;
+}
+.module_tr td{
+	background:#eee;
+	color:red;
+	padding:3px;
+}
+
+#comment_title{
+	height:92px;
+	background:url(../default/comment_title.gif);
+}
+#comment_title td{
+	padding-top:18px;
+}
+
+/*列表栏目名称*/
+.showsortname{
+	backgr ound:url(../default/article_elite.gif) no-repeat 0.3em 0;
+	padding-left:0.1em;
+	te xt-indent:1.5em;
+	font-weight:bold;
+	line-height:40px;
+	float:left;
+}
+
+/*下拉菜单的背景颜色与透明度设置*/
+#menuTable{
+	background:#F5FCFE;
+	border:1px solid #A7CAFA;
+	filter:Alpha(Opacity=80);
+}
+#menuTable td{
+	padding:3px 0px 3px 5px;
+	line-height:15px;
+}
+
+#webguide{
+	margin-top:8px;
+}
+
+
+/********
+*最后修改于:2009-04-10 09:39
+*********/
+.wrap{
+	width:930opx;
+}

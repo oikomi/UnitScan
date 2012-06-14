@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+'''
+http://blog.csdn.net/cashey1991/article/details/6262704
+'''
 
-import WebCrawler
+import WebCrawler  
+  
+url = 'http://history.sysu.edu.cn/archive/index.php'
+thNumber = 10
+Maxdepth = 2
+  
+wc = WebCrawler.WebCrawler(thNumber, Maxdepth)  
+wc.Craw(url)  
 
-url = raw_input('设置入口url(例-->http://www.baidu.com): \n')
-thNumber = int(raw_input('设置线程数:'))    #之前类型未转换出bug
-
-wc = WebCrawler.WebCrawler(thNumber)
-wc.Craw(url)
+print WebCrawler.getUrl()

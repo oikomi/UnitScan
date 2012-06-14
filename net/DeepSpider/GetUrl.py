@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-urlSep = ['<','>','\\','(',')', r'"', ' ', '\t', '\n']
+urlSep = ['<','>','//','(',')', r'"', r"'", ' ', '\t', '\n']
 urlTag = ['http://']
 
 def is_sep(ch):
@@ -27,3 +27,5 @@ def GetUrl(strPage):
             end = find_first_sep(begin+len(tag),strPage)
             rtList.append(strPage[begin:end])
             i = strPage.find(tag, end, len(strPage))
+
+    return rtList
