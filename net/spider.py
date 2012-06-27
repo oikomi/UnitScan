@@ -19,5 +19,6 @@ if __name__ == "__main__":
     s = Spider('http://www.renren.com/')
     
     print s.gethtml()
+
         
 

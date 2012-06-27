@@ -7,6 +7,7 @@ import urllib
 import urlparse
 import socket
 
+
 class HTTPResponse():
     data = ""
     code = "200"
