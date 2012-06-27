@@ -147,7 +147,7 @@ ss = SurfaceSpider()
 #content =ss.getContent(url)
 #print ss.getHyperLinks('http://www.huawei.com/cn/')
 #print ss.getInfo('http://www.huawei.com/cn/')
-for a in ss.getHyperLinks('http://history.sysu.edu.cn/archive/index.php'):
+for a in ss.getHyperLinks('http://www.huawei.com/cn/'):
     print a
     #print ss.getInfo(url)
     #print a

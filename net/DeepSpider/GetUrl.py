@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import re
+from bs4 import BeautifulSoup
+
 
 urlSep = ['<','>','//','(',')', r'"', r"'", ' ', '\t', '\n']
 urlTag = ['http://']
@@ -29,3 +32,14 @@ def GetUrl(strPage):
             i = strPage.find(tag, end, len(strPage))
 
     return rtList
+
+def getHyperLinks(data):
+    links = []
+    soup=BeautifulSoup(data)
+    a=soup.findAll("a",{"href":re.compile(".*")})
+    #print a
+    for i in a:
+        if i["href"].find("http://")!=-1:
+            links.append(i["href"]) 
+    return links
+
