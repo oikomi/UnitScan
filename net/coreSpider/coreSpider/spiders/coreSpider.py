@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #-*- coding: UTF-8 -*-
 
+
 import sys
 import re
 import socket
@@ -18,8 +19,8 @@ from scrapy.http import Request
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.conf import settings
-from net.HttpClient import HttpClient
-from net.HttpClient import HTTPResponse
+
+import httplib2
 
 import os
 #from net.coreSpider.coreSpider.items import CorespiderItem
@@ -72,21 +73,8 @@ class Form:
     self.scopeURL = root   # Scope of the analysis
     
     self.tobrowse.append(root)
-    self.h = HttpClient()
+    self.h = httplib2.Http()
     
-
-  def setTimeOut(self, timeout = 6):
-    """Set the timeout in seconds to wait for a page"""
-    self.timeout = timeout
-
-  def setProxy(self, proxy = ""):
-    """Set proxy preferences"""
-    self.proxy = proxy
-
-  def setNice(self, nice=0):
-    """Set the maximum of urls to visit with the same pattern"""
-    self.nice = nice
-
   def setScope(self, scope):
     self.scope = scope
     if scope == self.SCOPE_FOLDER:
@@ -105,7 +93,6 @@ class Form:
     """Add an url to the list of forbidden urls"""
     self.excluded.append(url)
 
-
   def addBadParam(self, bad_param):
     self.bad_params.append(bad_param)
 
@@ -118,8 +105,7 @@ class Form:
     currentdir = "/".join(current.split("/")[:-1]) + "/"
 
     try:
-      data = self.h.send(url, method='get').getPage()
-      info = self.h.send(url, method='get').getInfo()
+      info, data = self.h.request(url)
     except socket.timeout:
       self.excluded.append(url)
       return {}
@@ -141,7 +127,7 @@ class Form:
       elif info["content-type"].find("text") == -1:
         return info
 
-    page_encoding = BeautifulSoup.BeautifulSoup(data).originalEncoding
+    page_encoding = BeautifulSoup(data).originalEncoding
 
     # Manage redirections
     if info.has_key("location"):
@@ -165,7 +151,7 @@ class Form:
     try:
       p.feed(htmlSource)
     except HTMLParser.HTMLParseError, err:
-      htmlSource = BeautifulSoup.BeautifulSoup(htmlSource).prettify()
+      htmlSource = BeautifulSoup(htmlSource).prettify()
       try:
         p.reset()
         p.feed(htmlSource)
@@ -176,7 +162,7 @@ class Form:
     # Sometimes the page is badcoded but the parser doesn't see the error
     # So if we got no links we can force a correction of the page
     if len(p.liens) == 0:
-      htmlSource = BeautifulSoup.BeautifulSoup(htmlSource).prettify()
+      htmlSource = BeautifulSoup(htmlSource).prettify()
       try:
         p.reset()
         p.feed(htmlSource)
@@ -366,66 +352,6 @@ class Form:
       string = string[i + len(block):]
     return match
 
-  def go(self, crawlerFile):
-    proxy = None
-
-
-    self.h = httplib2.Http(cache = None, timeout = self.timeout,
-                            proxy_info = proxy)
-    self.h.follow_redirects = False
-    # load of the crawler status if a file is passed to it.
-    if crawlerFile != None:
-      if self.persister.isDataForUrl(crawlerFile) == 1:
-        self.persister.loadXML(crawlerFile)
-        self.tobrowse = self.persister.getToBrose()
-        # TODO: change xml file for browsed urls
-        self.browsed  = self.persister.getBrowsed()
-        self.forms    = self.persister.getForms()
-        self.uploads  = self.persister.getUploads()
-        print _("File") + " " + crawlerFile + " " + _("loaded, the scan continues") + ":"
-        if self.verbose == 2:
-          print " * " + _("URLs to browse")
-          for x in self.tobrowse:
-            print "    + " + x
-          print " * " + _("URLs browsed")
-          for x in self.browsed.keys():
-            print "    + " + x
-      else:
-        print _("File") + " " + crawlerFile + " " + _("not found, Wapiti will scan again the web site")
-
-    # while url list isn't empty, continue browsing
-    # if the user stop the scan with Ctrl+C, give him all found urls
-    # and they are saved in an XML file
-    try:
-      while len(self.tobrowse) > 0:
-        lien = self.tobrowse.pop(0)
-        if (lien not in self.browsed.keys() and lien not in self.excluded):
-          headers = self.browse(lien)
-          if headers != {}:
-            if not headers.has_key("link_encoding"):
-              if self.link_encoding.has_key(lien):
-                headers["link_encoding"] = self.link_encoding[lien]
-            self.browsed[lien] = headers
-            if self.verbose == 1:
-              sys.stderr.write('.')
-            elif self.verbose == 2:
-              print lien
-        if(self.scope == self.SCOPE_PAGE):
-          self.tobrowse = []
-      self.saveCrawlerData()
-      print ""
-      print " " + _("Notice") + " "
-      print "========"
-      print _("This scan has been saved in the file") + " " + self.persister.CRAWLER_DATA_DIR + '/' + self.server + ".xml"
-      print _("You can use it to perform attacks without scanning again the web site with the \"-k\" parameter")
-    except KeyboardInterrupt:
-      self.saveCrawlerData()
-      print ""
-      print " " + _("Notice") + " "
-      print "========"
-      print _("Scan stopped, the data has been saved in the file") + " " + self.persister.CRAWLER_DATA_DIR + '/' + self.server + ".xml"
-      print _("To continue this scan, you should launch Wapiti with the \"-i\" parameter")
-      pass
 
   def verbosity(self, vb):
     """Set verbosity level"""
@@ -836,5 +762,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    f = Form('www.huawei.com')
+    f.browse('http://history.sysu.edu.cn/archive/index.php?cateid=11')
+    print f.getForms()
+    print f.getLinks()
+    
         
