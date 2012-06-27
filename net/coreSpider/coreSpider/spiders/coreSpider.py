@@ -1,17 +1,24 @@
+
+
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+from scrapy.conf import settings
 
 import os
 #from net.coreSpider.coreSpider.items import CorespiderItem
 
 
-class coreSpider(BaseSpider):
+class coreSpider(CrawlSpider):
     name = "coreSpider"
     allowed_domains = ["huawei.com"]
     start_urls = ["http://www.huawei.com/cn/"]
+#    rules = (
+#        Rule(SgmlLinkExtractor(allow=( ), deny=('\.jpg','\.pdf' ,'\.doc'))),
+#    )
+
     g_url = []
     g_url_200 = []
     g_url_404 = []
@@ -55,7 +62,12 @@ class coreSpider(BaseSpider):
         
         hxs = HtmlXPathSelector(response)
 
-
+def setting():
+    #from scrapy.conf import settings
+    #print settings['LOG_ENABLED']
+    settings.overrides['BOT_NAME'] = 'coreSpider'
+    settings.overrides['BOT_VERSION'] = '1.0'
+    settings.overrides['DEPTH_LIMIT'] = 3
 
 
 def main():
@@ -70,10 +82,7 @@ def main():
     dispatcher.connect(catch_item, signal=signals.item_passed)
 
     # shut off log
-    from scrapy.conf import settings
-    print settings['LOG_ENABLED']
-    settings.overrides['DEPTH_LIMIT'] = 2
-
+    setting()
     #settings.overrides['LOG_ENABLED'] = True
     #settings.overrides['LOG_LEVEL'] = 'DEBUG'
 
@@ -93,7 +102,8 @@ def main():
     crawler.start()
     print '********************'
     c = coreSpider()
-    print c.get_urls();
+    print c.get_urls()
+    print len(c.get_urls())
     print "ENGINE STOPPED"
 
 
