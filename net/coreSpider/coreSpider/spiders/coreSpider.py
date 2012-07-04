@@ -8,6 +8,7 @@ from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.conf import settings
 
+import getForms
 ###################
 # 主爬虫类
 ###################
@@ -23,20 +24,33 @@ class coreSpider(BaseSpider):
     g_url = []
     g_url_200 = []
     g_url_404 = []
+    g_url_other = []
+    g_forms = []
     
     def get_urls(self):
         
-        return self.g_url;
+        return self.g_url_200;
+    def get_forms(self, urls):
+        print '________________'
+        for u in urls:
+            f = getForms.crawlForm(u)
+        self.g_forms.append(f)
+        
+        print f
+        
+        return self.g_forms
+        
     
     def dealUrl(self, url, code):
         self.g_url.append(url)
         if code == 200:
             self.g_url_200.append(url)
-        if code == 404:
+        elif code == 404:
             self.g_url_404.append(url)
+        else:
+            self.g_url_other.append(url)
             
-     
-
+    
     def parse(self, response):
         #print response.headers
         self.dealUrl(response.url, response.status)
@@ -105,7 +119,9 @@ def main():
     crawler.start()
     print '********************'
     c = coreSpider()
-    print c.get_urls()
+    urls = c.get_urls()
+    print urls
+    print c.get_forms(urls) 
     print len(c.get_urls())
     print "ENGINE STOPPED"
 

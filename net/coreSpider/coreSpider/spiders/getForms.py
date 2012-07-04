@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+
+#!/usr/bin/python
+#-*- coding: UTF-8 -*-
 
 import sys
 import re
@@ -14,6 +16,10 @@ from xml.dom import minidom
 from crawlerpersister import CrawlerPersister
 #import libcookie
 import BeautifulSoup
+
+###############
+reload(sys)
+sys.setdefaultencoding( "utf-8" ) 
 
 class Form():
 
@@ -50,7 +56,7 @@ class Form():
   nice = 0
 
   def __init__(self, root, crawlerFile=None):
-    self.h = httplib2.Http()
+    self.h = httplib2.Http(disable_ssl_certificate_validation=True)
     if root.find("http://") != 0 and root.find("https://") != 0:
       root = "http://" + root
     if root[-1] != "/" and (root.split("://")[1]).find("/") == -1:
@@ -124,11 +130,13 @@ class Form():
 
     try:
       info, data = self.h.request(url)
-    except socket.timeout:
+    except socket.timeout, e:
       self.excluded.append(url)
       return {}
-
-    code = info['status']
+    try:
+      code = info['status']
+    except:
+      pass
 
     if not self.link_encoding.has_key(url):
       self.link_encoding[url] = ""
@@ -767,15 +775,16 @@ class linkParser2:
 def crawlForm(url):
   myls = Form(url)
   myls.browse(url)
-  print myls.getLinks()
+#  print myls.getLinks()
   print myls.getForms()
-  print len(myls.getForms())
-  myls.printLinks()
-  myls.printForms()
-  myls.printUploads()
+#  print len(myls.getForms())
+#  myls.printLinks()
+#  myls.printForms()
+#  myls.printUploads()
+  return myls.getForms()
 if __name__ == "__main__":
     
-  crawlForm('https://uniportal.huawei.com/uniportal/forwardLogin.do?redirect=http%3A%2F%2Fwww.huawei.com%2Fcn%2F')
+  crawlForm('http://www.huawei.com/cn/')
     
     
     
