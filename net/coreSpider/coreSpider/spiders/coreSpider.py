@@ -12,7 +12,7 @@ from scrapy.conf import settings
 # 主爬虫类
 ###################
 
-class coreSpider(CrawlSpider):
+class coreSpider(BaseSpider):
     name = "coreSpider"
     allowed_domains = ["huawei.com"]
     start_urls = ["http://www.huawei.com/cn/"]
@@ -38,6 +38,7 @@ class coreSpider(CrawlSpider):
      
 
     def parse(self, response):
+        #print response.headers
         self.dealUrl(response.url, response.status)
         
         hxs = HtmlXPathSelector(response)

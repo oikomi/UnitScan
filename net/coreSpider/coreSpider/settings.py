@@ -22,12 +22,23 @@ DEPTH_PRIORITY = 1
 SCHEDULER_DISK_QUEUE = 'scrapy.squeue.PickleFifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeue.FifoMemoryQueue'
 DEPTH_LIMIT = 1
+DEPTH_STATS_VERBOSE = True
 
 
 #for proxy
-DOWNLOADER_MIDDLEWARES = {
-'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
-'coreSpider.middlewares.ProxyMiddleware': 100,
-}
+#DOWNLOADER_MIDDLEWARES = {
+#'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
+#'coreSpider.middlewares.ProxyMiddleware': 100,
+#}
+
+#for cookie
+COOKIES_DEBUG = True
+
+#for robot.txt
+ROBOTSTXT_OBEY = True
+
+#for log
+LOG_FILE = 'log'
+
 
 
