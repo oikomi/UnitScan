@@ -1,8 +1,6 @@
 #!/usr/bin/python
 #-*- coding: UTF-8 -*-
 
-
-
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request
@@ -10,16 +8,14 @@ from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.conf import settings
 
-
-
 ###################
 # 主爬虫类
 ###################
 
 class coreSpider(CrawlSpider):
     name = "coreSpider"
-    allowed_domains = ["github.com"]
-    start_urls = ["https://github.com"]
+    allowed_domains = ["huawei.com"]
+    start_urls = ["http://www.huawei.com/cn/"]
 #    rules = (
 #        Rule(SgmlLinkExtractor(allow=( ), deny=('\.jpg','\.pdf' ,'\.doc'))),
 #    )
@@ -45,7 +41,7 @@ class coreSpider(CrawlSpider):
         self.dealUrl(response.url, response.status)
         
         hxs = HtmlXPathSelector(response)
-        urls = hxs.select('//a[contains(@href, "github.com")]/@href').extract()
+        urls = hxs.select('//a[contains(@href, "huawei.com")]/@href').extract()
         
         for url in urls:
             #wb = CorespiderItem()
@@ -58,25 +54,23 @@ class coreSpider(CrawlSpider):
             
 
     def start_requests(self):
+        print 'start request'
         if self.start_urls:
             h = {'User-agent':'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)'}
+            
             return [Request(r, headers=h) for r in self.start_urls]
             
-        
-
 
 def setting():
     #from scrapy.conf import settings
     #print settings['LOG_ENABLED']
     settings.overrides['BOT_NAME'] = 'coreSpider'
     settings.overrides['BOT_VERSION'] = '1.0'
-    settings.overrides['DEPTH_LIMIT'] = 5
+    settings.overrides['DEPTH_LIMIT'] = 2
     settings.overrides['DOWNLOADER_DEBUG'] = True
     settings.overrides['LOG_ENABLED'] = True
     settings.overrides['LOG_LEVEL'] = 'DEBUG'
     settings.overrides['LOG_STDOUT'] = True
-
-
 
 def main():
     """Setups item signal and run the spider"""

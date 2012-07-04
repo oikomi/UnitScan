@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#-*- coding: UTF-8 -*-
 # Scrapy settings for coreSpider project
 #
 # For simplicity, this file contains only the most important settings by
@@ -20,3 +22,12 @@ DEPTH_PRIORITY = 1
 SCHEDULER_DISK_QUEUE = 'scrapy.squeue.PickleFifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeue.FifoMemoryQueue'
 DEPTH_LIMIT = 1
+
+
+#for proxy
+DOWNLOADER_MIDDLEWARES = {
+'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
+'coreSpider.middlewares.ProxyMiddleware': 100,
+}
+
+
