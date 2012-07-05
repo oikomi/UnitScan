@@ -19,7 +19,7 @@ import BeautifulSoup
 
 ###############
 reload(sys)
-sys.setdefaultencoding( "utf-8" ) 
+sys.setdefaultencoding("utf-8") 
 
 class Form():
 
@@ -72,7 +72,17 @@ class Form():
     
     self.tobrowse.append(root)
     self.persister = CrawlerPersister()
-
+  
+  def zero(self):
+    self.tobrowse = []
+    self.forms = []
+    self.liens = []
+    self.forms = []
+    self.form_values = {}
+    self.inform = 0
+    self.current_form_url = ""
+    self.uploads = []
+    self.current_form_method = "get"
   def setTimeOut(self, timeout = 6):
     """Set the timeout in seconds to wait for a page"""
     self.timeout = timeout
@@ -776,15 +786,32 @@ def crawlForm(url):
   myls = Form(url)
   myls.browse(url)
 #  print myls.getLinks()
-  print myls.getForms()
+  print '(((((((((((('
+  #print myls.getForms()
+  print '(((((((((((('
 #  print len(myls.getForms())
 #  myls.printLinks()
 #  myls.printForms()
 #  myls.printUploads()
-  return myls.getForms()
-if __name__ == "__main__":
+  postinfo = myls.getForms()
+  myls.zero()
+  print postinfo
+  return postinfo
+
+
+def reForms(urls):
+  all_info = []
+  for url in urls:
+    print url
+    info =  crawlForm(url)
+    if len(info) is not 0: 
+      all_info.append(info[0])
+  return all_info
     
-  crawlForm('http://www.huawei.com/cn/')
+    
+if __name__ == "__main__":
+  urls = ['http://enterprise.huawei.com/cn/solutions/cloudcomputing/desktop-cloud/index.htm','http://enterprise.huawei.com/ilink/cnenterprise/support/bulletin/index.htm?node=0']
+  print reForms(urls)
     
     
     

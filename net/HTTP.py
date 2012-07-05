@@ -7,8 +7,9 @@ import socket
 import os
 import cgi
 import httplib2
+import libcookie
 
-class HTTPResponse:
+class HTTPResponse():
   data = ""
   code = "200"
   headers = {}
@@ -34,7 +35,7 @@ class HTTPResponse:
     "Return a tuple of the content and the HTTP Response code."
     return (self.data, self.code)
 
-class HTTP:
+class HTTP():
   root = ""
   myls = ""
   server = ""
@@ -47,10 +48,10 @@ class HTTP:
 
   def __init__(self):
 
-
+    self.cookiejar = libcookie.libcookie(self.server)
     self.h = httplib2.Http(cache = None, timeout = self.timeout)
     self.h.follow_redirects=False
-
+    
     if self.auth_basic != []:
       self.h.add_credentials(self.auth_basic[0], self.auth_basic[1])
 
@@ -70,8 +71,11 @@ class HTTP:
     data = ""
     code = "0"
     info = {}
-    _headers = self.cookiejar.headers_url(target)
-    _headers.update(http_headers)
+    try:
+      _headers = self.cookiejar.headers_url(target)
+      _headers.update(http_headers)
+    except:
+      pass
     if post_data == None:
       if method != "":
         info, data = self.h.request(target, method, headers = _headers)

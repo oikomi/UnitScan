@@ -9,14 +9,18 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.conf import settings
 
 import getForms
+from scanner.mod_xss import Attack
+from net.HTTP import HTTP
+import httplib2
+import BeautifulSoup
 ###################
 # 主爬虫类
 ###################
 
 class coreSpider(BaseSpider):
     name = "coreSpider"
-    allowed_domains = ["huawei.com"]
-    start_urls = ["http://www.huawei.com/cn/"]
+    allowed_domains = ["sysu.edu.cn"]
+    start_urls = ["http://history.sysu.edu.cn/archive/index.php"]
 #    rules = (
 #        Rule(SgmlLinkExtractor(allow=( ), deny=('\.jpg','\.pdf' ,'\.doc'))),
 #    )
@@ -26,25 +30,52 @@ class coreSpider(BaseSpider):
     g_url_404 = []
     g_url_other = []
     g_forms = []
+    g_getinfo = {}
+    h = httplib2.Http(disable_ssl_certificate_validation=True)
+    link_encoding = {}
     
     def get_urls(self):
+        return self.g_url_200
         
-        return self.g_url_200;
+    def get_getinfo(self):
+        
+        return self.g_getinfo
+    
     def get_forms(self, urls):
-        print '________________'
-        for u in urls:
-            f = getForms.crawlForm(u)
-        self.g_forms.append(f)
-        
-        print f
-        
-        return self.g_forms
+        return getForms.reForms(urls)
+#        print '________________'
+#        for u in urls:
+#            print '****'
+#            print u
+#            print '*****'
+#            f = getForms.crawlForm(u)
+#            print '----------'
+#            print self.g_forms
+#            print '-----------'
+#            if len(f) is not 0:
+#                #print f
+#                self.g_forms.append(f)
+#        
+#        #print f
+#        
+#        return self.g_forms
         
     
     def dealUrl(self, url, code):
         self.g_url.append(url)
         if code == 200:
             self.g_url_200.append(url)
+            info, data = self.h.request(url)
+            page_encoding = BeautifulSoup.BeautifulSoup(data).originalEncoding
+            self.link_encoding[url] = page_encoding
+            headers = info
+            if headers != {}:
+                if not headers.has_key("link_encoding"):
+                    if self.link_encoding.has_key(url):
+                        headers["link_encoding"] = self.link_encoding[url]
+                
+            print headers
+            self.g_getinfo[url] = headers
         elif code == 404:
             self.g_url_404.append(url)
         else:
@@ -56,7 +87,7 @@ class coreSpider(BaseSpider):
         self.dealUrl(response.url, response.status)
         
         hxs = HtmlXPathSelector(response)
-        urls = hxs.select('//a[contains(@href, "huawei.com")]/@href').extract()
+        urls = hxs.select('//a[contains(@href, "sysu.edu.cn")]/@href').extract()
         
         for url in urls:
             #wb = CorespiderItem()
@@ -81,7 +112,7 @@ def setting():
     #print settings['LOG_ENABLED']
     settings.overrides['BOT_NAME'] = 'coreSpider'
     settings.overrides['BOT_VERSION'] = '1.0'
-    settings.overrides['DEPTH_LIMIT'] = 2
+    settings.overrides['DEPTH_LIMIT'] = 1
     settings.overrides['DOWNLOADER_DEBUG'] = True
     settings.overrides['LOG_ENABLED'] = True
     settings.overrides['LOG_LEVEL'] = 'DEBUG'
@@ -119,11 +150,18 @@ def main():
     crawler.start()
     print '********************'
     c = coreSpider()
-    urls = c.get_urls()
-    print urls
-    print c.get_forms(urls) 
+    getinfo = c.get_getinfo()
+    print getinfo
+    print c.get_urls()
+    forms = c.get_forms(c.get_urls()) 
+    print forms
     print len(c.get_urls())
     print "ENGINE STOPPED"
+    # scanner
+    h = HTTP()
+    a = Attack(h)
+    a.attack(getinfo,forms)
+    print '%%%%%%%%%%%%%%%'
 
 
 if __name__ == '__main__':

@@ -5,7 +5,120 @@ import random
 import re
 import socket
 import BeautifulSoup
-from attack import Attack
+#from attack import Attack
+
+
+##############
+import os
+
+from file.auxtext import AuxText
+#from mod_xss import mod_xss
+
+class Attack():
+    """
+    This class represents an attack, it must be extended
+    for any class which implements a new type of attack
+    """
+    verbose = 0
+    color   = 0
+
+    name = "attack"
+    
+    reportGen = None
+    HTTP      = None
+    auxText   = None
+
+    doGET = True
+    doPOST = True
+
+    # List of modules (strs) that must be launched before the current module
+    # Must be defined in the code of the module
+    require = []
+    # List of modules (objects) that must be launched before the current module
+    # Must be left empty in the code
+    deps = []
+    
+    # List of attack's url already launched in the current module
+    attackedGET  = []
+    attackedPOST = []
+
+    vulnerableGET  = []
+    vulnerablePOST = []
+
+    CONFIG_DIR_NAME = "config/attacks"
+    BASE_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__),'../..'))
+    CONFIG_DIR = BASE_DIR+"/"+CONFIG_DIR_NAME
+
+    # Color codes
+    STD = "\033[0;0m"
+    RED = "\033[1;31m"
+    YELLOW = "\033[1;33m"
+    CYAN = "\033[1;36m"
+    GB = "\033[0;30m\033[47m"
+
+    allowed = ['php', 'html', 'htm', 'xml', 'xhtml', 'xht', 'xhtm',
+              'asp', 'aspx', 'php3', 'php4', 'php5', 'txt', 'shtm',
+              'shtml', 'phtm', 'phtml', 'jhtml', 'pl', 'jsp', 'cfm',
+              'cfml', 'py']
+
+    # The priority of the module, from 0 (first) to 10 (last). Default is 5
+    PRIORITY = 5
+    
+    def __init__(self,HTTP):
+        self.HTTP = HTTP
+        #self.reportGen = reportGen
+        self.auxText = AuxText()
+
+    def setVerbose(self,verbose):
+        self.verbose = verbose
+
+    def setColor(self):
+        self.color = 1
+        
+    def loadPayloads(self,fileName):
+        """This method loads the payloads for an attack from the specified file"""
+        return self.auxText.readLines(fileName)
+
+    def attackGET(self, page, dict, headers = {}):
+      return
+
+    def attackPOST(self, form):
+      return
+
+    def loadRequire(self, obj = []):
+      self.deps = obj
+
+    def attack(self, urls, forms):
+      if self.doGET == True:
+        for url, headers in urls.items():
+          dictio = {}
+          params = []
+          page = url
+
+          if url.find("?") >= 0:
+            page = url.split('?')[0]
+            query = url.split('?')[1]
+            params = query.split('&')
+            if query.find("=") >= 0:
+              for param in params:
+                dictio[param.split('=')[0]] = param.split('=')[1]
+
+          if self.verbose == 1:
+            print "+ " + _("attackGET") + " "+url
+            if params != []:
+              print "  ", params
+          #start
+          xss = mod_xss(self.HTTP)
+          xss.attackGET(page, dictio, headers)
+
+      if self.doPOST == True:
+        for form in forms:
+          if form[1] != {}:
+            xss = mod_xss(self.HTTP)
+            xss.attackPOST(form)
+
+
+#################
 
 
 class mod_xss(Attack):
@@ -38,14 +151,15 @@ class mod_xss(Attack):
 
   CONFIG_FILE = "xssPayloads.txt"
 
-  def __init__(self, HTTP, xmlRepGenerator):
-    Attack.__init__(self, HTTP, xmlRepGenerator)
+  def __init__(self, HTTP):
+    Attack.__init__(self, HTTP)
     self.independant_payloads = self.loadPayloads(self.CONFIG_DIR + "/" + self.CONFIG_FILE)
 
   def attackGET(self, page, dict, headers = {}):
     """This method performs the cross site scripting attack (XSS attack) with method GET"""
     # page est l'url de script
     # dict est l'ensembre des variables et leurs valeurs
+    print 'in attackGET'
     if dict == {}:
       # Do not attack application-type files
       if not headers.has_key("content-type"):
@@ -97,6 +211,7 @@ class mod_xss(Attack):
 
   def attackPOST(self, form):
     """This method performs the cross site scripting attack (XSS attack) with method POST"""
+    print 'in attackPOST'
     headers = {"Accept": "text/plain"}
     page = form[0]
     params = form[1]
@@ -283,12 +398,12 @@ class mod_xss(Attack):
 #                            _("XSS") + " (" + var + ")")
 
         if referer != "":
-          print _("Found XSS in"), page
+          print "Found XSS in ", page
           if self.color == 0:
-            print "  " + _("with params") + " =", self.HTTP.encode(params, encoding)
+            print "  " + "with params " + " =", self.HTTP.encode(params, encoding)
           else:
-            print "  " + _("with params") + " =", self.HTTP.encode(params, encoding).replace(var + "=", self.RED + var + self.STD + "=")
-          print "  " + _("coming from"), referer
+            print "  " + "with params " + " =", self.HTTP.encode(params, encoding).replace(var + "=", self.RED + var + self.STD + "=")
+          print "  " + "coming from ", referer
 
         else:
           if self.color == 0:
@@ -363,4 +478,9 @@ class mod_xss(Attack):
         return True
 ##########################################################
     return False
+
+
+
+######for 
+
 

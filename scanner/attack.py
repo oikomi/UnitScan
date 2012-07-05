@@ -4,8 +4,9 @@
 import os
 
 from file.auxtext import AuxText
+#from mod_xss import mod_xss
 
-class Attack:
+class Attack():
     """
     This class represents an attack, it must be extended
     for any class which implements a new type of attack
@@ -55,9 +56,9 @@ class Attack:
     # The priority of the module, from 0 (first) to 10 (last). Default is 5
     PRIORITY = 5
     
-    def __init__(self,HTTP,reportGen):
+    def __init__(self,HTTP):
         self.HTTP = HTTP
-        self.reportGen = reportGen
+        #self.reportGen = reportGen
         self.auxText = AuxText()
 
     def setVerbose(self,verbose):
@@ -98,7 +99,8 @@ class Attack:
             print "+ " + _("attackGET") + " "+url
             if params != []:
               print "  ", params
-
+          #start
+          #xss = mod_xss(self.HTTP)
           self.attackGET(page, dictio, headers)
 
       if self.doPOST == True:
