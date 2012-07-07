@@ -1,5 +1,5 @@
-#!/usr/bin/python
-#-*- coding: UTF-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
@@ -7,9 +7,14 @@ from scrapy.http import Request
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.conf import settings
+from scrapy.log import start
 
+
+import os
+import sys
 import getForms
-from scanner.mod_xss import Attack
+
+from scanner.ModXss import Attack_XSS
 from net.HTTP import HTTP
 import httplib2
 import BeautifulSoup
@@ -90,8 +95,6 @@ class coreSpider(BaseSpider):
         urls = hxs.select('//a[contains(@href, "sysu.edu.cn")]/@href').extract()
         
         for url in urls:
-            #wb = CorespiderItem()
-            #print '$$$$$$$$$$$$'
             if  url not in self.g_url:
 
                 yield Request(url, callback=self.parse)         
@@ -105,7 +108,9 @@ class coreSpider(BaseSpider):
             h = {'User-agent':'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)'}
             
             return [Request(r, headers=h) for r in self.start_urls]
-            
+
+
+                    
 
 def setting():
     #from scrapy.conf import settings
@@ -114,9 +119,42 @@ def setting():
     settings.overrides['BOT_VERSION'] = '1.0'
     settings.overrides['DEPTH_LIMIT'] = 1
     settings.overrides['DOWNLOADER_DEBUG'] = True
-    settings.overrides['LOG_ENABLED'] = True
-    settings.overrides['LOG_LEVEL'] = 'DEBUG'
-    settings.overrides['LOG_STDOUT'] = True
+    #settings.overrides['LOG_ENABLED'] = True
+#    settings.overrides['LOG_LEVEL'] = 'DEBUG'
+#    settings.overrides['LOG_STDOUT'] = False
+#    settings.overrides['LOG_FILE'] = 'log.txt'
+    ####for proxy
+#    settings.overrides['DOWNLOADER_MIDDLEWARES'] = {
+#    'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
+#    'net.coreSpider.coreSpider.spiders.Mymiddlewares.ProxyMiddleware': 100,
+#    }
+
+def setDir():
+    oDir = os.getcwd()
+    #os.system("cd ../..")
+    os.chdir("../..")
+    cmd = "scrapy crawl coreSpider"
+    #os.chdir("../.")
+    os.system(cmd)
+    print os.getcwd()
+    
+def main_cmd():
+    setDir()
+    print '********************'
+    c = coreSpider()
+    getinfo = c.get_getinfo()
+    print getinfo
+    print c.get_urls()
+    forms = c.get_forms(c.get_urls()) 
+    print forms
+    print len(c.get_urls())
+    print "ENGINE STOPPED"
+    # scanner
+    h = HTTP()
+    a = Attack_XSS(h)
+    a.attack(getinfo,forms)
+    print '%%%%%%%%%%%%%%%'
+    
 
 def main():
     """Setups item signal and run the spider"""
@@ -131,10 +169,7 @@ def main():
 
     # shut off log
     setting()
-    #settings.overrides['LOG_ENABLED'] = True
-    #settings.overrides['LOG_LEVEL'] = 'DEBUG'
-
-
+    start(logfile = 'l',loglevel = 'DEBUG',logstdout = False)
     # set up crawler
     from scrapy.crawler import CrawlerProcess
 
@@ -159,10 +194,9 @@ def main():
     print "ENGINE STOPPED"
     # scanner
     h = HTTP()
-    a = Attack(h)
+    a = Attack_XSS(h)
     a.attack(getinfo,forms)
     print '%%%%%%%%%%%%%%%'
-
 
 if __name__ == '__main__':
     main()

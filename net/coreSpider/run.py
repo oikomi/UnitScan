@@ -1,37 +1,18 @@
-
-
-
-from net.coreSpider.coreSpider.spiders.coreSpider import coreSpider
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#from net.coreSpider.coreSpider.spiders.coreSpider import main_cmd
+import os
+import sys
 
 def main():
-    """Setups item signal and run the spider"""
-    # set up signal to catch items scraped
-    from scrapy import signals
-    from scrapy.xlib.pydispatch import dispatcher
 
-    def catch_item(sender, item, **kwargs):
-        print "Got:", item
-
-    dispatcher.connect(catch_item, signal=signals.item_passed)
-
-    # shut off log
-    from scrapy.conf import settings
-    settings.overrides['LOG_ENABLED'] = False
-
-    # set up crawler
-    from scrapy.crawler import CrawlerProcess
-
-    crawler = CrawlerProcess(settings)
-    crawler.install()
-    crawler.configure()
-
-    # schedule spider
-    crawler.crawl(coreSpider())
-
-    # start engine scrapy/twisted
-    print "STARTING ENGINE"
-    crawler.start()
-    print "ENGINE STOPPED"
+    cmd = "scrapy crawl coreSpider"
+    #os.chdir("../.")
+    oDir = os.getcwd()
+    os.chdir(os.getcwd()+"/net/coreSpider/")
+    print os.getcwd()
+    os.system(cmd)
+    os.chdir(oDir)
 
 
 if __name__ == '__main__':

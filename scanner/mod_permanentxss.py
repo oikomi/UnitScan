@@ -1,11 +1,13 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import random
 import re
 import socket
-from net import BeautifulSoup
+import BeautifulSoup
 from attack import Attack
-from vulnerability import Vulnerability
-from vulnerabilitiesdescriptions import VulnerabilitiesDescriptions as VulDescrip
+#from vulnerability import Vulnerability
+#from vulnerabilitiesdescriptions import VulnerabilitiesDescriptions as VulDescrip
 
 class mod_permanentxss(Attack):
   """
@@ -76,11 +78,11 @@ class mod_permanentxss(Attack):
                   print _("Found permanent XSS in"), url
                   print "  " + _("with"), attack_url.replace(k + "=", self.RED + k + self.STD + "=")
 
-                self.reportGen.logVulnerability(Vulnerability.XSS,
-                                Vulnerability.HIGH_LEVEL_VULNERABILITY, url, "",
-                                _("Found permanent XSS in") + \
-                                    " " + url + " " + \
-                                    _("with") + " " + self.HTTP.escape(attack_url))
+#                self.reportGen.logVulnerability(Vulnerability.XSS,
+#                                Vulnerability.HIGH_LEVEL_VULNERABILITY, url, "",
+#                                _("Found permanent XSS in") + \
+#                                    " " + url + " " + \
+#                                    _("with") + " " + self.HTTP.escape(attack_url))
                 break
 
       headers = {"Accept": "text/plain"}
@@ -98,10 +100,10 @@ class mod_permanentxss(Attack):
                   except socket.timeout:
                     dat = ""
                   if self.validXSS(dat, code):
-                    self.reportGen.logVulnerability(Vulnerability.XSS,
-                                Vulnerability.HIGH_LEVEL_VULNERABILITY, url, "",
-                                _("Found permanent XSS attacked by") + " " + self.POST_XSS[code][0] + \
-                                " " + _("with fields") + " " + self.HTTP.encode(tmp))
+#                    self.reportGen.logVulnerability(Vulnerability.XSS,
+#                                Vulnerability.HIGH_LEVEL_VULNERABILITY, url, "",
+#                                _("Found permanent XSS attacked by") + " " + self.POST_XSS[code][0] + \
+#                                " " + _("with fields") + " " + self.HTTP.encode(tmp))
                     print _("Found permanent XSS in"), url
                     if self.color ==1:
                       print "  " + _("attacked by"), self.POST_XSS[code][2], _("with fields"), \

@@ -1,5 +1,5 @@
-#!/usr/bin/python
-#-*- coding: UTF-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Scrapy settings for coreSpider project
 #
 # For simplicity, this file contains only the most important settings by
@@ -38,7 +38,7 @@ COOKIES_DEBUG = True
 ROBOTSTXT_OBEY = True
 
 #for log
-LOG_FILE = 'log'
+#LOG_FILE = 'log'
 
 
 

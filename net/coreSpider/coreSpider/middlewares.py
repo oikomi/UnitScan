@@ -1,6 +1,5 @@
-
-#!/usr/bin/python
-#-*- coding: UTF-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Importing base64 library because we'll need it ONLY
 #in case if the proxy we are going to use requires authentication
@@ -20,3 +19,6 @@ class ProxyMiddleware(object):
         # setup basic authentication for the proxy
         encoded_user_pass = base64.encodestring(proxy_user_pass)
         request.headers['Proxy-Authorization'] = 'Basic ' + encoded_user_pass
+        
+        
+        
