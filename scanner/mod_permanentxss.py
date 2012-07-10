@@ -5,11 +5,129 @@ import random
 import re
 import socket
 import BeautifulSoup
-from attack import Attack
+#from attack import Attack
 #from vulnerability import Vulnerability
 #from vulnerabilitiesdescriptions import VulnerabilitiesDescriptions as VulDescrip
 
-class mod_permanentxss(Attack):
+##############
+import os
+
+from file.auxtext import AuxText
+#from mod_xss import mod_xss
+
+
+class Attack_permanentXSS(object):
+    """
+    This class represents an attack, it must be extended
+    for any class which implements a new type of attack
+    """
+    verbose = 0
+    color   = 0
+
+    name = "attack"
+    
+    reportGen = None
+    HTTP      = None
+    auxText   = None
+
+    doGET = True
+    doPOST = True
+
+    # List of modules (strs) that must be launched before the current module
+    # Must be defined in the code of the module
+    require = []
+    # List of modules (objects) that must be launched before the current module
+    # Must be left empty in the code
+    deps = []
+    
+    # List of attack's url already launched in the current module
+    attackedGET  = []
+    attackedPOST = []
+
+    vulnerableGET  = []
+    vulnerablePOST = []
+
+    CONFIG_DIR_NAME = "config/attacks"
+    BASE_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__),'../..'))
+    CONFIG_DIR = BASE_DIR+"/"+CONFIG_DIR_NAME
+
+    # Color codes
+    STD = "\033[0;0m"
+    RED = "\033[1;31m"
+    YELLOW = "\033[1;33m"
+    CYAN = "\033[1;36m"
+    GB = "\033[0;30m\033[47m"
+
+    allowed = ['php', 'html', 'htm', 'xml', 'xhtml', 'xht', 'xhtm',
+              'asp', 'aspx', 'php3', 'php4', 'php5', 'txt', 'shtm',
+              'shtml', 'phtm', 'phtml', 'jhtml', 'pl', 'jsp', 'cfm',
+              'cfml', 'py']
+
+    # The priority of the module, from 0 (first) to 10 (last). Default is 5
+    PRIORITY = 5
+    
+    def __init__(self,HTTP):
+        self.HTTP = HTTP
+        #self.reportGen = reportGen
+        self.auxText = AuxText()
+
+    def setVerbose(self,verbose):
+        self.verbose = verbose
+
+    def setColor(self):
+        self.color = 1
+        
+    def loadPayloads(self,fileName):
+        """This method loads the payloads for an attack from the specified file"""
+        return self.auxText.readLines(fileName)
+
+    def attackGET(self, page, dict, headers = {}):
+      return
+
+    def attackPOST(self, form):
+      return
+
+    def loadRequire(self, obj = []):
+      self.deps = obj
+      
+    def attack_p(self, urls, forms, tmp):
+      p_xss = mod_permanentxss(self.HTTP)
+      p_xss.set_XSS(tmp)
+      p_xss.attack(urls, forms)
+        
+
+    def attack(self, urls, forms):
+        
+      if self.doGET == True:
+        for url, headers in urls.items():
+          dictio = {}
+          params = []
+          page = url
+
+          if url.find("?") >= 0:
+            page = url.split('?')[0]
+            query = url.split('?')[1]
+            params = query.split('&')
+            if query.find("=") >= 0:
+              for param in params:
+                dictio[param.split('=')[0]] = param.split('=')[1]
+
+          if self.verbose == 1:
+            print "+ " + _("attackGET") + " "+url
+            if params != []:
+              print "  ", params
+
+          self.attackGET(page, dictio, headers)
+
+      if self.doPOST == True:
+        for form in forms:
+          if form[1] != {}:
+            self.attackPOST(form)
+
+#################
+
+
+class mod_permanentxss(Attack_permanentXSS):
   """
   This class implements a cross site scripting attack
   """
@@ -41,8 +159,8 @@ class mod_permanentxss(Attack):
 
   CONFIG_FILE = "xssPayloads.txt"
 
-  def __init__(self, HTTP, xmlRepGenerator):
-    Attack.__init__(self, HTTP, xmlRepGenerator)
+  def __init__(self, HTTP):
+    Attack_permanentXSS.__init__(self, HTTP)
     self.independant_payloads = self.loadPayloads(self.CONFIG_DIR + "/" + self.CONFIG_FILE)
 
   # permanent XSS
@@ -123,6 +241,9 @@ class mod_permanentxss(Attack):
         if x["src"] == "http://__XSS__/x.js".replace("__XSS__", code):
           return True
     return False
+  def set_XSS(self, tmp):
+    self.GET_XSS = tmp[0]
+    self.POST_XSS = tmp[1]
 
   def loadRequire(self, obj = []):
     self.deps = obj

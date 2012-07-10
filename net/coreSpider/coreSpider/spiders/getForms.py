@@ -70,7 +70,7 @@ class Form():
     self.server   = server # Domain
     self.scopeURL = root   # Scope of the analysis
     
-    self.tobrowse.append(root)
+#    self.tobrowse.append(root)
     self.persister = CrawlerPersister()
   
   def zero(self):
@@ -83,6 +83,7 @@ class Form():
     self.current_form_url = ""
     self.uploads = []
     self.current_form_method = "get"
+    
   def setTimeOut(self, timeout = 6):
     """Set the timeout in seconds to wait for a page"""
     self.timeout = timeout
@@ -786,9 +787,9 @@ def crawlForm(url):
   myls = Form(url)
   myls.browse(url)
 #  print myls.getLinks()
-  print '(((((((((((('
-  #print myls.getForms()
-  print '(((((((((((('
+#  print '(((((((((((('
+#  #print myls.getForms()
+#  print '(((((((((((('
 #  print len(myls.getForms())
 #  myls.printLinks()
 #  myls.printForms()
@@ -806,12 +807,13 @@ def reForms(urls):
     info =  crawlForm(url)
     if len(info) is not 0: 
       all_info.append(info[0])
+      #all_info.append(info)
   return all_info
     
     
 if __name__ == "__main__":
-  urls = ['http://enterprise.huawei.com/cn/solutions/cloudcomputing/desktop-cloud/index.htm','http://enterprise.huawei.com/ilink/cnenterprise/support/bulletin/index.htm?node=0']
-  print reForms(urls)
+  urls = ['http://demo.testfire.net/default.aspx?content=business_lending.htm']
+  reForms(urls)
     
     
     

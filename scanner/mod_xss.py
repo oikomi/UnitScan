@@ -5,7 +5,7 @@ import random
 import re
 import socket
 import BeautifulSoup
-#from attack import Attack
+
 
 
 ##############
@@ -14,7 +14,7 @@ import os
 from file.auxtext import AuxText
 #from mod_xss import mod_xss
 
-class Attack():
+class Attack_XSS(object):
     """
     This class represents an attack, it must be extended
     for any class which implements a new type of attack
@@ -89,6 +89,7 @@ class Attack():
       self.deps = obj
 
     def attack(self, urls, forms):
+      tmp = []
       if self.doGET == True:
         for url, headers in urls.items():
           dictio = {}
@@ -110,18 +111,28 @@ class Attack():
           #start
           xss = mod_xss(self.HTTP)
           xss.attackGET(page, dictio, headers)
+          
+          tmp.append(xss.forPerXSSGET())
+          
+          
 
       if self.doPOST == True:
         for form in forms:
           if form[1] != {}:
             xss = mod_xss(self.HTTP)
             xss.attackPOST(form)
+            
+            tmp.append(xss.forPerXSSPOST())
+       
+      print tmp[0].keys()     
+      return tmp
+
 
 
 #################
 
 
-class mod_xss(Attack):
+class mod_xss(Attack_XSS):
   """
   This class implements a cross site scripting attack
   """
@@ -152,8 +163,14 @@ class mod_xss(Attack):
   CONFIG_FILE = "xssPayloads.txt"
 
   def __init__(self, HTTP):
-    Attack.__init__(self, HTTP)
+    Attack_XSS.__init__(self, HTTP)
     self.independant_payloads = self.loadPayloads(self.CONFIG_DIR + "/" + self.CONFIG_FILE)
+
+  def forPerXSSGET(self):
+    return self.GET_XSS
+
+  def forPerXSSPOST(self):
+    return self.POST_XSS
 
   def attackGET(self, page, dict, headers = {}):
     """This method performs the cross site scripting attack (XSS attack) with method GET"""
@@ -176,6 +193,7 @@ class mod_xss(Attack):
         code = "".join([random.choice("0123456789abcdefghjijklmnopqrstuvwxyz") for i in range(0,10)]) # don't use upercase as BS make some data lowercase
         url = page + "?" + code
         self.GET_XSS[code] = url
+        print self.GET_XSS[code]
         try:
           data = self.HTTP.send(url).getPage()
         except socket.timeout:

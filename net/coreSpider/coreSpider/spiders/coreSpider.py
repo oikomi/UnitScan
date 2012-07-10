@@ -13,8 +13,10 @@ from scrapy.log import start
 import os
 import sys
 import getForms
+import re
 
-from scanner.ModXss import Attack_XSS
+from scanner.mod_xss import Attack_XSS
+from scanner.mod_permanentxss import Attack_permanentXSS
 from net.HTTP import HTTP
 import httplib2
 import BeautifulSoup
@@ -24,8 +26,8 @@ import BeautifulSoup
 
 class coreSpider(BaseSpider):
     name = "coreSpider"
-    allowed_domains = ["sysu.edu.cn"]
-    start_urls = ["http://history.sysu.edu.cn/archive/index.php"]
+    allowed_domains = ["testfire.net"]
+    start_urls = ["http://demo.testfire.net/"]
 #    rules = (
 #        Rule(SgmlLinkExtractor(allow=( ), deny=('\.jpg','\.pdf' ,'\.doc'))),
 #    )
@@ -47,6 +49,7 @@ class coreSpider(BaseSpider):
         return self.g_getinfo
     
     def get_forms(self, urls):
+        
         return getForms.reForms(urls)
 #        print '________________'
 #        for u in urls:
@@ -79,20 +82,63 @@ class coreSpider(BaseSpider):
                     if self.link_encoding.has_key(url):
                         headers["link_encoding"] = self.link_encoding[url]
                 
-            print headers
+            #print headers
             self.g_getinfo[url] = headers
         elif code == 404:
             self.g_url_404.append(url)
         else:
             self.g_url_other.append(url)
-            
+
+    def getURL(self, html):
+        print '%%%%%%%%%%%%%'
+        urls=[]
+        #print html
+        if html:
+            print '!!!!!!!!'
+            soup = BeautifulSoup.BeautifulSoup(html)
+            content=soup.findAll('a')
+            print content
+            for i in content:
+                url=i["href"]
+                print url
+                if url and url[0:4]=="http":
+                    urls.append(url)
+                if url and url[0:4]!="http":
+                    print url
+        return urls  
+     
+    def getHyperLinks(self, baseUrl, data):
+        links = []
+        soup=BeautifulSoup.BeautifulSoup(data)
+        a=soup.findAll("a",{"href":re.compile(".*")})
+        for i in a:
+            if i["href"].find("http://")!=-1:
+                links.append(i["href"])
+            else:
+                links.append(baseUrl + i["href"])
+        return links
     
     def parse(self, response):
         #print response.headers
+        print '&&&&&&&&&&&&&&'
+        print response.url
         self.dealUrl(response.url, response.status)
         
         hxs = HtmlXPathSelector(response)
-        urls = hxs.select('//a[contains(@href, "sysu.edu.cn")]/@href').extract()
+#        base_url = hxs.select("//base/@href").extract()
+#        print '-------'
+#        print base_url
+#        print '-------'
+#        if 'testfire.net' in response.url:
+#            soup = BeautifulSoup(response.body)
+#            items = [(x[0].text, x[0].get('href')) for x in
+#                    filter(None, [
+#                    x.findChildren() for x in
+#                    soup.findAll('td', {'class':'title'})
+#                    ])]
+        uuu = response.url
+        urls =  self.getHyperLinks(uuu, response.body) 
+        #urls = hxs.select('//a[contains(@href, "")]/@href').extract()
         
         for url in urls:
             if  url not in self.g_url:
@@ -129,34 +175,34 @@ def setting():
 #    'net.coreSpider.coreSpider.spiders.Mymiddlewares.ProxyMiddleware': 100,
 #    }
 
-def setDir():
-    oDir = os.getcwd()
-    #os.system("cd ../..")
-    os.chdir("../..")
-    cmd = "scrapy crawl coreSpider"
-    #os.chdir("../.")
-    os.system(cmd)
-    print os.getcwd()
+#def setDir():
+#    oDir = os.getcwd()
+#    #os.system("cd ../..")
+#    os.chdir("../..")
+#    cmd = "scrapy crawl coreSpider"
+#    #os.chdir("../.")
+#    os.system(cmd)
+#    print os.getcwd()
     
-def main_cmd():
-    setDir()
-    print '********************'
-    c = coreSpider()
-    getinfo = c.get_getinfo()
-    print getinfo
-    print c.get_urls()
-    forms = c.get_forms(c.get_urls()) 
-    print forms
-    print len(c.get_urls())
-    print "ENGINE STOPPED"
-    # scanner
-    h = HTTP()
-    a = Attack_XSS(h)
-    a.attack(getinfo,forms)
-    print '%%%%%%%%%%%%%%%'
+#def main_cmd():
+#    setDir()
+#    print '********************'
+#    c = coreSpider()
+#    getinfo = c.get_getinfo()
+#    print getinfo
+#    print c.get_urls()
+#    forms = c.get_forms(c.get_urls()) 
+#    print forms
+#    print len(c.get_urls())
+#    print "ENGINE STOPPED"
+#    # scanner
+#    h = HTTP()
+#    a = Attack_XSS(h)
+#    a.attack(getinfo,forms)
+#    print '%%%%%%%%%%%%%%%'
     
 
-def main():
+def main_spider():
     """Setups item signal and run the spider"""
     # set up signal to catch items scraped
     from scrapy import signals
@@ -167,8 +213,10 @@ def main():
 
     dispatcher.connect(catch_item, signal=signals.item_passed)
 
-    # shut off log
+    # setting
     setting()
+    
+    # set log
     start(logfile = 'l',loglevel = 'DEBUG',logstdout = False)
     # set up crawler
     from scrapy.crawler import CrawlerProcess
@@ -187,19 +235,26 @@ def main():
     c = coreSpider()
     getinfo = c.get_getinfo()
     print getinfo
-    print c.get_urls()
-    forms = c.get_forms(c.get_urls()) 
+    urls = c.get_urls()
+    forms = c.get_forms(urls) 
     print forms
     print len(c.get_urls())
     print "ENGINE STOPPED"
     # scanner
     h = HTTP()
     a = Attack_XSS(h)
-    a.attack(getinfo,forms)
+    tmp = a.attack(getinfo,forms)
     print '%%%%%%%%%%%%%%%'
+    
+    print 'per XSS start'
+    
+    p_xss = Attack_permanentXSS(h)
+    p_xss.attack_p(getinfo, forms, tmp)
+    
+    
 
 if __name__ == '__main__':
-    main()
+    main_spider()
 
 #    
         
