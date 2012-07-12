@@ -124,7 +124,7 @@ class Attack_XSS(object):
             
             tmp.append(xss.forPerXSSPOST())
        
-      print tmp[0].keys()     
+      #print tmp[0].keys()     
       return tmp
 
 

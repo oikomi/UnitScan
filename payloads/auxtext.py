@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 class AuxText:
     """Class for reading and writing in text files"""

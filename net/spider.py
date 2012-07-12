@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from HttpClient import HttpClient
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 
 
 

@@ -6,4 +6,4 @@ import os
 from file.auxtext import AuxText
 #from mod_xss import mod_xss
 
-from mod_xss import Attack_XSS
+#from mod_xss import Attack_XSS

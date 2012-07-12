@@ -32,8 +32,8 @@ class coreSpider(BaseSpider):
 #        Rule(SgmlLinkExtractor(allow=( ), deny=('\.jpg','\.pdf' ,'\.doc'))),
 #    )
 
-    g_url = []
-    g_url_200 = []
+    g_url = [] # all urls
+    g_url_200 = [] #200 urls
     g_url_404 = []
     g_url_other = []
     g_forms = []
@@ -90,11 +90,8 @@ class coreSpider(BaseSpider):
             self.g_url_other.append(url)
 
     def getURL(self, html):
-        print '%%%%%%%%%%%%%'
         urls=[]
-        #print html
         if html:
-            print '!!!!!!!!'
             soup = BeautifulSoup.BeautifulSoup(html)
             content=soup.findAll('a')
             print content
@@ -119,9 +116,6 @@ class coreSpider(BaseSpider):
         return links
     
     def parse(self, response):
-        #print response.headers
-        print '&&&&&&&&&&&&&&'
-        print response.url
         self.dealUrl(response.url, response.status)
         
         hxs = HtmlXPathSelector(response)
@@ -136,13 +130,12 @@ class coreSpider(BaseSpider):
 #                    x.findChildren() for x in
 #                    soup.findAll('td', {'class':'title'})
 #                    ])]
-        uuu = response.url
-        urls =  self.getHyperLinks(uuu, response.body) 
+        u = response.url
+        urls =  self.getHyperLinks(u, response.body) 
         #urls = hxs.select('//a[contains(@href, "")]/@href').extract()
-        
+                #过滤重复的url
         for url in urls:
             if  url not in self.g_url:
-
                 yield Request(url, callback=self.parse)         
 
         print len(self.g_url_200)
@@ -217,7 +210,7 @@ def main_spider():
     setting()
     
     # set log
-    start(logfile = 'l',loglevel = 'DEBUG',logstdout = False)
+    start(logfile = 'log/spider/spider.log',loglevel = 'INFO',logstdout = False)
     # set up crawler
     from scrapy.crawler import CrawlerProcess
 
