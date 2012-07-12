@@ -1,0 +1,21 @@
+2012-07-12 11:29:35+0800 [scrapy] INFO: Scrapy 0.14.4 started (bot: coreSpider)
+2012-07-12 11:29:35+0800 [coreSpider] INFO: Spider opened
+2012-07-12 11:29:35+0800 [coreSpider] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2012-07-12 11:30:17+0800 [coreSpider] INFO: Closing spider (finished)
+2012-07-12 11:30:17+0800 [coreSpider] INFO: Dumping spider stats:
+	{'downloader/request_bytes': 10696,
+	 'downloader/request_count': 31,
+	 'downloader/request_method_count/GET': 31,
+	 'downloader/response_bytes': 260727,
+	 'downloader/response_count': 31,
+	 'downloader/response_status_count/200': 27,
+	 'downloader/response_status_count/404': 1,
+	 'downloader/response_status_count/500': 3,
+	 'finish_reason': 'finished',
+	 'finish_time': datetime.datetime(2012, 7, 12, 3, 30, 17, 470055),
+	 'request_depth_max': 1,
+	 'scheduler/memory_enqueued': 31,
+	 'start_time': datetime.datetime(2012, 7, 12, 3, 29, 35, 444626)}
+2012-07-12 11:30:17+0800 [coreSpider] INFO: Spider closed (finished)
+2012-07-12 11:30:17+0800 [scrapy] INFO: Dumping global stats:
+	{'memusage/max': 25026560, 'memusage/startup': 25026560}
