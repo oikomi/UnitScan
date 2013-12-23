@@ -3,11 +3,6 @@ from xml.parsers import expat
 from xml.dom.minidom import Document
 
 class CrawlerPersister:
-  """
-  This class makes the persistence tasks for persisting the crawler parameters
-  in other to can continue the process in the future.
-  """
-
   CRAWLER_DATA_DIR_NAME = "scans"
   BASE_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__),'../..'))
   CRAWLER_DATA_DIR = BASE_DIR+"/"+CRAWLER_DATA_DIR_NAME
@@ -55,10 +50,6 @@ class CrawlerPersister:
     return os.path.exists(fileName)
 
   def saveXML(self, fileName):
-    """
-    Exports the crawler parameters to an XML file.
-    @param fileName The file where is loaded the crawler data
-    """
     xml = Document()
     root = xml.createElement("root")
     xml.appendChild(root)

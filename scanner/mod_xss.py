@@ -31,14 +31,12 @@ class Attack_XSS(object):
     doGET = True
     doPOST = True
 
-    # List of modules (strs) that must be launched before the current module
-    # Must be defined in the code of the module
+
     require = []
-    # List of modules (objects) that must be launched before the current module
-    # Must be left empty in the code
+
     deps = []
     
-    # List of attack's url already launched in the current module
+
     attackedGET  = []
     attackedPOST = []
 
@@ -61,7 +59,7 @@ class Attack_XSS(object):
               'shtml', 'phtm', 'phtml', 'jhtml', 'pl', 'jsp', 'cfm',
               'cfml', 'py']
 
-    # The priority of the module, from 0 (first) to 10 (last). Default is 5
+
     PRIORITY = 5
     
     def __init__(self,HTTP):
@@ -137,19 +135,12 @@ class mod_xss(Attack_XSS):
   This class implements a cross site scripting attack
   """
 
-  # magic strings we must see to be sure script is vulnerable to XSS
-  # payloads must be created on those paterns
   script_ok = [
       "alert('__XSS__')",
       "alert(\"__XSS__\")",
       "String.fromCharCode(0,__XSS__,1)"
       ]
 
-  # simple payloads that doesn't rely on their position in the DOM structure
-  # payloads injected after closing a tag aatibute value (attrval) or in the
-  # content of a tag (text node like beetween <p> and </p>)
-  # only trick here must be on character encoding, filter bypassing, stuff like that
-  # form the simplest to the most complex, Wapiti will stop on the first working
   independant_payloads = []
   
   name = "xss"
@@ -173,9 +164,6 @@ class mod_xss(Attack_XSS):
     return self.POST_XSS
 
   def attackGET(self, page, dict, headers = {}):
-    """This method performs the cross site scripting attack (XSS attack) with method GET"""
-    # page est l'url de script
-    # dict est l'ensembre des variables et leurs valeurs
     print 'in attackGET'
     if dict == {}:
       # Do not attack application-type files
@@ -303,10 +291,7 @@ class mod_xss(Attack_XSS):
 
     for elem in e:
       payload = ""
-      # traiter chaque entree au cas par cas
-      # on quitte a la premiere entree exploitable
 
-      # common situation
       if elem['type'] == "attrval":
         #print "tag->"+elem['tag']
         #print elem['name']

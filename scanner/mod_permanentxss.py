@@ -17,10 +17,6 @@ from file.auxtext import AuxText
 
 
 class Attack_permanentXSS(object):
-    """
-    This class represents an attack, it must be extended
-    for any class which implements a new type of attack
-    """
     verbose = 0
     color   = 0
 
@@ -33,14 +29,11 @@ class Attack_permanentXSS(object):
     doGET = True
     doPOST = True
 
-    # List of modules (strs) that must be launched before the current module
-    # Must be defined in the code of the module
+
     require = []
-    # List of modules (objects) that must be launched before the current module
-    # Must be left empty in the code
+
     deps = []
-    
-    # List of attack's url already launched in the current module
+
     attackedGET  = []
     attackedPOST = []
 
@@ -132,19 +125,14 @@ class mod_permanentxss(Attack_permanentXSS):
   This class implements a cross site scripting attack
   """
 
-  # magic strings we must see to be sure script is vulnerable to XSS
-  # payloads must be created on those paterns
+
   script_ok = [
       "alert('__XSS__')",
       "alert(\"__XSS__\")",
       "String.fromCharCode(0,__XSS__,1)"
       ]
 
-  # simple payloads that doesn't rely on their position in the DOM structure
-  # payloads injected after closing a tag aatibute value (attrval) or in the
-  # content of a tag (text node like beetween <p> and </p>)
-  # only trick here must be on character encoding, filter bypassing, stuff like that
-  # form the simplest to the most complex, Wapiti will stop on the first working
+
   independant_payloads = []
   
   name = "permanentxss"
@@ -176,7 +164,7 @@ class mod_permanentxss(Attack_permanentXSS):
       if self.doGET == 1:
         for code in self.GET_XSS.keys():
           if data.find(code) >= 0:
-            # we where able to inject the ID but will we be able to inject javascript?
+            
             for xss in self.independant_payloads:
               attack_url = self.GET_XSS[code].replace(code, xss.replace("__XSS__", code))
               try:

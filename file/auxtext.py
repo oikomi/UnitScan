@@ -15,7 +15,7 @@ class AuxText:
                     lines.append(cleanLine.replace("\\0","\0"))
         except IOError,e:
             print e
-        #finally clause do not work with jyton
+
         #finally:
             #if f!=None:
                 #f.close()
